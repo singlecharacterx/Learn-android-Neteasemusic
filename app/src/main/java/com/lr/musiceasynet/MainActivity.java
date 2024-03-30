@@ -78,10 +78,8 @@ public class MainActivity extends AppCompatActivity {
         Runnable updateseekbar = new Runnable() {
             @Override
             public void run() {
-                if (musicPlayerBannerViewModel.musicinfolivedata.getValue().getUrl()!=null) {
                     activityMainBinding.bottomMusicBannerProgress.setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
                     handler.postDelayed(this, 500);
-                }
             }
         };
 
@@ -120,11 +118,15 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                handler.removeCallbacks(updateseekbar);
+                if (musicPlayerBannerViewModel.musicinfolivedata.getValue().getUrl()!=null) {
+                    handler.removeCallbacks(updateseekbar);
+                }
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                handler.postDelayed(updateseekbar,500);
+                if (musicPlayerBannerViewModel.musicinfolivedata.getValue().getUrl()!=null) {
+                    handler.postDelayed(updateseekbar, 500);
+                }
             }
         });
 
