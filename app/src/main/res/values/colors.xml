@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#3F51B5</color>
+    <color name="light_blue">#B3DDFF</color>
+    <color name="dark_blue">#475E70</color>
+    <color name="blue_monet">#3F51B5</color>
+    <color name="light_blue_monet">#FFD1E4FF</color>
+    <color name="light_blue_monet2">#FFD7E3F8</color>
+    <color name="dark_blue_monet">#FF6B7789</color>
+    <color name="dark_blue_monet2">#FF3B4858</color>
+    <color name="transparent">#00000000</color>
+    <color name="grey_transparent">#7ED5D5D5</color>
+    <color name="white_transparent">#80FFFFFF</color>
+    <color name="red">#CF5858</color>
+</resources>

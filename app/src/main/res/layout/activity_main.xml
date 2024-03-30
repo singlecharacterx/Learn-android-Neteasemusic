@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="mainActivityData"
+            type="com.lr.musiceasynet.MusicPlayerBannerViewModel" />
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        app:layoutDescription="@xml/activity_main_scene">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:defaultNavHost="false"
+            app:layout_constraintBottom_toTopOf="@+id/music_player_banner"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navGraph="@navigation/bottomnavigation" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/music_player_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragmentContainerView"/>
+
+        <ImageView
+            android:id="@+id/bottom_music_banner_img"
+            style="@style/tune"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintStart_toStartOf="@+id/music_player_banner"
+            app:layout_constraintTop_toTopOf="@+id/music_player_banner"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/bottom_music_banner_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/no_music_is_playing"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintStart_toEndOf="@id/bottom_music_banner_img"
+            app:layout_constraintTop_toTopOf="@+id/music_player_banner" />
+
+        <TextView
+            android:id="@+id/bottom_music_banner_subtitle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/artist_name"/>
+
+
+        <ImageView
+            android:id="@+id/bottom_music_banner_previous"
+            style="@style/previous"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/bottom_music_banner_controller"
+            style="@style/play_circle_app"
+            app:overlay="false"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintEnd_toEndOf="@+id/music_player_banner"
+            app:layout_constraintTop_toTopOf="@+id/music_player_banner"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/bottom_music_banner_next"
+            style="@style/next"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/bottom_music_banner_progress"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/music_player_banner"
+            app:menu="@menu/bottom_navigation_bar_menu" />
+
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

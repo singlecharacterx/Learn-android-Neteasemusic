@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MyAccountFragment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/myaccountheadericoncard"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/transparent">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_margin="10dp"
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="@style/account"/>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.card.MaterialCardView
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="35dp"
+        app:cardElevation="1dp"
+        app:strokeColor="@color/transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Space
+                android:id="@+id/spacer"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"/>
+
+           <TextView
+               android:id="@+id/myaccountusernametext"
+               app:layout_constraintTop_toBottomOf="@+id/spacer"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               android:textAlignment="center"
+               android:textStyle="bold"
+               android:textSize="25sp"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="TestUsername"/>
+
+            <TextView
+                android:id="@+id/myaccountusertext"
+                app:layout_constraintTop_toBottomOf="@+id/myaccountusernametext"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TestUserText"/>
+
+            <TextView
+                android:id="@+id/myaccountuserstarstext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="stars"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/myaccountuserfanstext"
+                app:layout_constraintTop_toBottomOf="@+id/myaccountusertext" />
+
+            <TextView
+                android:id="@+id/myaccountuserfanstext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="fans"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/myaccountuseralbumnstext"
+                app:layout_constraintStart_toEndOf="@id/myaccountuserstarstext"
+                app:layout_constraintTop_toBottomOf="@+id/myaccountusertext" />
+
+            <TextView
+                android:id="@+id/myaccountuseralbumnstext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="albumns"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintStart_toEndOf="@+id/myaccountuserfanstext"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/myaccountusertext" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
