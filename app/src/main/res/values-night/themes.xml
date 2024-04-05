@@ -27,52 +27,52 @@
     </style>
 
     <style name="account">
-        <item name="android:src">@mipmap/account_light</item>
+        <item name="android:src">@drawable/account_light</item>
     </style>
 
     <style name="folder">
-        <item name="android:src">@mipmap/folder_light</item>
+        <item name="android:src">@drawable/folder_light</item>
     </style>
 
     <style name="discover">
-        <item name="android:src">@mipmap/discover_light</item>
+        <item name="android:src">@drawable/discover_light</item>
     </style>
 
     <style name="favorate">
-        <item name="android:src">@mipmap/favorite_light</item>
+        <item name="android:src">@drawable/favorite_light</item>
     </style>
 
     <style name="tune">
-        <item name="android:src">@mipmap/tune_light</item>
+        <item name="android:src">@drawable/tune_light</item>
     </style>
 
     <style name="play">
-        <item name="android:src">@mipmap/play_light</item>
+        <item name="android:src">@drawable/play_light</item>
     </style>
 
     <style name="pause">
-        <item name="android:src">@mipmap/pause_light</item>
+        <item name="android:src">@drawable/pause_light</item>
     </style>
 
     <style name="previous">
-        <item name="android:src">@mipmap/skip_previous_light</item>
+        <item name="android:src">@drawable/skip_previous_light</item>
     </style>
 
     <style name="next">
-        <item name="android:src">@mipmap/skip_next_light</item>
+        <item name="android:src">@drawable/skip_next_light</item>
     </style>
 
     <style name="pause_circle">
-        <item name="android:src">@mipmap/pause_circle_light</item>
+        <item name="android:src">@drawable/pause_circle_light</item>
     </style>
 
     <style name="play_circle">
-        <item name="android:src">@mipmap/play_circle_light</item>
+        <item name="android:src">@drawable/play_circle_light</item>
     </style>
 
     <style name="play_circle_app">
-        <item name="android:src">@mipmap/play_circle_light</item>
-        <item name="altSrc">@mipmap/play_circle_light</item>
+        <item name="android:src">@drawable/play_circle_light</item>
+        <item name="altSrc">@drawable/play_circle_light</item>
     </style>
 
 

@@ -1,6 +1,7 @@
 package com.lr.musiceasynet;
 
-import androidx.annotation.Nullable;
+import android.database.Cursor;
+import android.provider.MediaStore;
 
 public class MusicInfo {
     public MusicInfo(){
@@ -13,6 +14,15 @@ public class MusicInfo {
         this.artisst = artisst;
         this.duration = duration;
         this.album = album;
+    }
+
+    public MusicInfo(Cursor cursor) {
+        setUrl(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
+        setId(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)));
+        setTitle(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)));
+        setArtisst(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)));
+        setDuration(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
+        setAlbum(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)));
     }
 
     private String url;
@@ -77,4 +87,5 @@ public class MusicInfo {
             return (time / 1000 / 60) + ":" + time / 1000 % 60;
         }
     }
+
 }

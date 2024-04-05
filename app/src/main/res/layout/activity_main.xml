@@ -68,7 +68,8 @@
             android:id="@+id/bottom_music_banner_previous"
             style="@style/previous"
             android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:contentDescription="@string/previous_music" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/bottom_music_banner_controller"
@@ -86,7 +87,8 @@
             android:id="@+id/bottom_music_banner_next"
             style="@style/next"
             android:layout_width="0dp"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:contentDescription="@string/next_music" />
 
         <androidx.appcompat.widget.AppCompatSeekBar
             android:id="@+id/bottom_music_banner_progress"

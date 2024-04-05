@@ -2,9 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-<<<<<<< Updated upstream
-=======
-    <mapping directory="$PROJECT_DIR$/Learn-android-Neteasemusic" vcs="Git" />
->>>>>>> Stashed changes
   </component>
 </project>

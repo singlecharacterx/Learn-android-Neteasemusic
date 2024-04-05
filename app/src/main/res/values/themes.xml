@@ -38,52 +38,52 @@
     </style>
 
     <style name="account">
-        <item name="android:src">@mipmap/account_dark</item>
+        <item name="android:src">@drawable/account_dark</item>
     </style>
 
     <style name="folder">
-        <item name="android:src">@mipmap/folder_dark</item>
+        <item name="android:src">@drawable/folder_dark</item>
     </style>
 
     <style name="discover">
-        <item name="android:src">@mipmap/discover_dark</item>
+        <item name="android:src">@drawable/discover_dark</item>
     </style>
 
     <style name="favorate">
-        <item name="android:src">@mipmap/favorite_dark</item>
+        <item name="android:src">@drawable/favorite_dark</item>
     </style>
 
     <style name="tune">
-        <item name="android:src">@mipmap/tune_dark</item>
+        <item name="android:src">@drawable/tune_dark</item>
     </style>
 
     <style name="play">
-        <item name="android:src">@mipmap/play_dark</item>
+        <item name="android:src">@drawable/play_dark</item>
     </style>
 
     <style name="pause">
-        <item name="android:src">@mipmap/pause_dark</item>
+        <item name="android:src">@drawable/pause_dark</item>
     </style>
 
     <style name="previous">
-        <item name="android:src">@mipmap/skip_previous_dark</item>
+        <item name="android:src">@drawable/skip_previous_dark</item>
     </style>
 
     <style name="next">
-        <item name="android:src">@mipmap/skip_next_dark</item>
+        <item name="android:src">@drawable/skip_next_dark</item>
     </style>
 
     <style name="pause_circle">
-        <item name="android:src">@mipmap/pause_circle_dark</item>
+        <item name="android:src">@drawable/pause_circle_dark</item>
     </style>
 
     <style name="play_circle">
-        <item name="android:src">@mipmap/play_circle_dark</item>
+        <item name="android:src">@drawable/play_circle_dark</item>
     </style>
 
     <style name="play_circle_app">
-        <item name="android:src">@mipmap/play_circle_dark</item>
-        <item name="altSrc">@mipmap/play_circle_dark</item>
+        <item name="android:src">@drawable/play_circle_dark</item>
+        <item name="altSrc">@drawable/play_circle_dark</item>
     </style>
 
 </resources>

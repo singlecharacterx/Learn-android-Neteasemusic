@@ -12,4 +12,8 @@
     <string name="discover_new_songs">发现新音乐</string>
     <string name="local_songs">本地音乐</string>
     <string name="artist_name">歌手名</string>
+    <string name="previous_music">上一首</string>
+    <string name="next_music">下一首</string>
+    <string name="please_give_music_permisson">请先授予音乐读取权限</string>
+    <string name="didnt_find_music">未找到音乐</string>
 </resources>

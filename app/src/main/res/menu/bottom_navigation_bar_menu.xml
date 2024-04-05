@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navtorec"
-        android:icon="@mipmap/discover_dark"
+        android:icon="@drawable/discover_dark"
         android:title="@string/recommend"/>
     <item
         android:id="@+id/navtomain"
-        android:icon="@mipmap/favorite_dark"
+        android:icon="@drawable/favorite_dark"
         android:title="@string/main_index"/>
     <item
         android:id="@+id/navtomyaccount"
-        android:icon="@mipmap/account_dark"
+        android:icon="@drawable/account_dark"
         android:title="@string/about_me"/>
 </menu>

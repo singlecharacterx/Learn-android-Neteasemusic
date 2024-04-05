@@ -63,7 +63,11 @@
             app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
             app:layout_constraintStart_toStartOf="@id/music_player_banner"
             app:layout_constraintEnd_toStartOf="@id/bottom_music_banner_controller"
-            android:alpha="0" />
+            android:alpha="0" >
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="false" />
+        </Constraint>
         <Constraint
             android:id="@+id/bottom_music_banner_next"
             android:layout_width="0dp"
@@ -72,7 +76,11 @@
             app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
             app:layout_constraintEnd_toEndOf="@id/music_player_banner"
             app:layout_constraintStart_toEndOf="@+id/bottom_music_banner_controller"
-            android:alpha="0"/>
+            android:alpha="0">
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="false" />
+        </Constraint>
         <Constraint
             android:id="@+id/bottom_music_banner_progress"
             android:layout_width="0dp"
@@ -162,7 +170,11 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_music_banner_progress"
             app:layout_constraintStart_toStartOf="@id/music_player_banner"
             app:layout_constraintEnd_toStartOf="@id/bottom_music_banner_controller"
-            android:alpha="1"/>
+            android:alpha="1">
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="true" />
+        </Constraint>
         <Constraint
             android:id="@+id/bottom_music_banner_next"
             android:layout_width="60dp"
@@ -171,7 +183,11 @@
             app:layout_constraintBottom_toTopOf="@+id/bottom_music_banner_progress"
             app:layout_constraintEnd_toEndOf="@id/music_player_banner"
             app:layout_constraintStart_toEndOf="@+id/bottom_music_banner_controller"
-            android:alpha="1"/>
+            android:alpha="1">
+            <CustomAttribute
+                app:attributeName="clickable"
+                app:customBoolean="true" />
+        </Constraint>
         <Constraint
             android:id="@+id/bottom_music_banner_progress"
             android:layout_width="match_parent"
@@ -188,6 +204,6 @@
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@+id/start" app:duration="250"
         app:motionInterpolator="easeInOut">
-        <OnClick app:targetId="@id/music_player_banner"/>
+       <!-- <OnClick app:targetId="@id/music_player_banner"/>-->
     </Transition>
 </MotionScene>
