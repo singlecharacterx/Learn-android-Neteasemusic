@@ -38,14 +38,18 @@ public class MainActivity extends AppCompatActivity {
     NavController navController;
     MotionLayout main;
     ConstraintLayout musicPlayerBanner;
-    TextView bottomMusicBannerTitle,bottomMusicBannerSubtitle;
-    ImageView bottomMusicBannerImg,bottomMusicBannerController,bottomMusicBannerNext,bottomMusicBannerPrevious;
+    TextView bottomMusicBannerTitle,
+            bottomMusicBannerSubtitle;
+    ImageView bottomMusicBannerImg,
+            bottomMusicBannerController,
+            bottomMusicBannerNext,
+            bottomMusicBannerPrevious;
     SeekBar bottomMusicBannerProgress;
     //ActivityMainBinding activityMainBinding;
     MusicPlayerBannerViewModel musicPlayerBannerViewModel;
     static MusicPlayerService musicPlayerService;
     Handler handler;
-
+    Runnable updateseekbar;
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -53,90 +57,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EdgeToEdge.enable(this);
-        musicPlayerBannerViewModel = new ViewModelProvider(this).get(MusicPlayerBannerViewModel.class);
-
         initView();
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        musicPlayerBannerViewModel = new ViewModelProvider(this).get(MusicPlayerBannerViewModel.class);
+        ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
-
-        Intent intent = new Intent(this,MusicPlayerService.class);
-        ServiceConnection serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                musicPlayerService = ((MusicPlayerService.MusicPlayerBinder)service).getService();
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-
-            }
-        };
-
-        bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+        connectToService();
         //navController = Navigation.findNavController(this,R.id.fragmentContainerView);
-
         musicPlayerBannerViewModel.getMusicInfoLiveData().observe(this, this::onObserveMusicInfoChanged);
-
-
-        handler = new Handler();
-        Runnable updateseekbar = new Runnable() {
-            @Override
-            public void run() {
-                if(musicPlayerService.mediaPlayer!=null) {
-                    bottomMusicBannerProgress.setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
-                    handler.postDelayed(this, 500);
-                }
-            }
-        };
-
-        handler.postDelayed(updateseekbar,500);
-
-
+        initHandler();
         musicPlayerBannerViewModel.getIsPlaying().observe(this, this::onObserveMusicIsPlaying);
-
         bottomMusicBannerNext.setOnClickListener(view-> playNextMusic());
-
         bottomMusicBannerPrevious.setOnClickListener(view-> playPreviousMusic());
-
-        bottomMusicBannerProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (musicPlayerBannerViewModel.musicInfoLiveData.getValue().getUrl()!=null&&fromUser){
-                    progressChanged(progress);
-                }
-                //播放完自动显示暂停
-               /* if (musicPlayerBannerViewModel.musicinfolivedata.getValue().getUrl()!=null&&
-                        !musicPlayerService.mediaPlayer.isPlaying()) musicPlayerBannerViewModel.isPlaying.setValue(false);*/
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                if (musicPlayerBannerViewModel.musicInfoLiveData.getValue().getUrl()!=null) {
-                    handler.removeCallbacks(updateseekbar);
-                }
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                if (musicPlayerBannerViewModel.musicInfoLiveData.getValue().getUrl()!=null) {
-                    handler.postDelayed(updateseekbar, 500);
-                }
-            }
-        });
-
+        progressChanged();
         musicPlayerBanner.setOnClickListener(view->{
             if (main.getCurrentState()==R.id.start) main.transitionToEnd();
         });
-
         bottomMusicBannerController.setOnClickListener(view-> onBottomMusicBannerControllerClick());
-
         bottomNavigationView.setOnItemSelectedListener(menuItem ->{
             onBottomNavigationItemClick(menuItem);
             return true;
          });
 
 
+    }
+
+    private void initHandler() {
+        handler = new Handler();
+        updateseekbar = new Runnable() {
+            @Override
+            public void run() {
+                if(musicPlayerService!=null) {
+                    bottomMusicBannerProgress.setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
+                    handler.postDelayed(this, 500);
+                }
+            }
+        };
+        handler.postDelayed(updateseekbar,500);
     }
 
     @Override
@@ -157,6 +116,22 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void connectToService(){
+        Intent intent = new Intent(this,MusicPlayerService.class);
+        ServiceConnection serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                musicPlayerService = ((MusicPlayerService.MusicPlayerBinder)service).getService();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void initView(){
@@ -188,15 +163,41 @@ public class MainActivity extends AppCompatActivity {
         if (musicInfo.getUrl()!=null&&MusicUtil.getMusicImg(musicInfo)!=null) {
             bottomMusicBannerImg.setImageBitmap (MusicUtil.getMusicImg(musicInfo));
         }else if (musicInfo.getUrl()!=null){
-            if (CommonUtil.isDarkMode()) bottomMusicBannerImg.setImageDrawable(getDrawable(R.drawable.tune_light));
-            else bottomMusicBannerImg.setImageDrawable(getDrawable(R.drawable.tune_dark));
+            if (CommonUtil.isDarkMode())
+                bottomMusicBannerImg.setImageDrawable(getDrawable(R.drawable.tune_light));
+            else
+                bottomMusicBannerImg.setImageDrawable(getDrawable(R.drawable.tune_dark));
         }
     }
 
-    private void progressChanged(int progress){
-        musicPlayerService.mediaPlayer.seekTo(progress);
-        musicPlayerService.playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,progress,1);
-        musicPlayerService.mediaSessionCompat.setPlaybackState(musicPlayerService.playbackStateCompat.build());
+    private void progressChanged(){
+        bottomMusicBannerProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (musicPlayerBannerViewModel.musicInfoLiveData.getValue().getUrl()!=null&&fromUser){
+                    musicPlayerService.mediaPlayer.seekTo(progress);
+                    musicPlayerService.playbackStateCompat
+                            .setState(PlaybackStateCompat.STATE_PLAYING,progress,1);
+                    musicPlayerService.mediaSessionCompat
+                            .setPlaybackState(musicPlayerService.playbackStateCompat.build());
+                }
+                //播放完自动显示暂停
+               /* if (musicPlayerBannerViewModel.musicinfolivedata.getValue().getUrl()!=null&&
+                        !musicPlayerService.mediaPlayer.isPlaying()) musicPlayerBannerViewModel.isPlaying.setValue(false);*/
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                if (musicPlayerBannerViewModel.musicInfoLiveData.getValue().getUrl()!=null) {
+                    handler.removeCallbacks(updateseekbar);
+                }
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (musicPlayerBannerViewModel.musicInfoLiveData.getValue().getUrl()!=null) {
+                    handler.postDelayed(updateseekbar, 500);
+                }
+            }
+        });
     }
 
     private void onObserveMusicIsPlaying(boolean isPlaying){

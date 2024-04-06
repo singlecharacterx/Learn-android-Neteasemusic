@@ -188,7 +188,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
 
     public void resumeMusic(){
         if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
+            mediaPlayer.start();
             musicPlayerBannerViewModel.isPlaying.setValue(false);
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1);
             mediaSessionCompat.setPlaybackState(playbackStateCompat.build());

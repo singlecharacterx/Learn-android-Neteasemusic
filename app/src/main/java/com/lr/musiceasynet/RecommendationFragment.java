@@ -18,11 +18,12 @@ public class RecommendationFragment extends Fragment {
 
     RecyclerView recommandbanner;
     List<Integer> bannerlist;
+    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recommandation, container, false);
+        root = inflater.inflate(R.layout.fragment_recommandation, container, false);
 
         recommandbanner = root.findViewById(R.id.recommend_banner);
         bannerlist = new ArrayList<>();

@@ -29,12 +29,13 @@ public class LocalAlbumFragment extends Fragment {
     RecyclerView localmusicrv;
     List<MusicInfo> musicInfos = new ArrayList<>();
     MusicListRVAdapter musicListRVAdapter;
+    private View root;
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root =  inflater.inflate(R.layout.fragment_local_album, container, false);
+        root = inflater.inflate(R.layout.fragment_local_album, container, false);
 
         localmusicrv = root.findViewById(R.id.local_album_list_RV);
         musicPlayerBannerViewModel = new ViewModelProvider(getActivity()).get(MusicPlayerBannerViewModel.class);
@@ -43,18 +44,7 @@ public class LocalAlbumFragment extends Fragment {
                 Manifest.permission.READ_MEDIA_AUDIO,
                 Manifest.permission.POST_NOTIFICATIONS},0);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(MyApplication.getContext(),Manifest.permission.READ_MEDIA_AUDIO)== PackageManager.PERMISSION_GRANTED) {
-                musicInfos = MusicUtil.getMusicInfos();
-                if (musicInfos.isEmpty()){
-                    Toast.makeText(MyApplication.getContext(), getString(R.string.didnt_find_music),Toast.LENGTH_SHORT).show();
-                }
-            }else {
-                Toast.makeText(MyApplication.getContext(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
-            }
-        }else if (ContextCompat.checkSelfPermission(MyApplication.getContext(),Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
-            musicInfos = MusicUtil.getMusicInfos();
-        }
+        checkPermissionApi33();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -69,4 +59,25 @@ public class LocalAlbumFragment extends Fragment {
 
         return root;
     }
+
+    private void checkPermissionApi33() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(MyApplication.getContext(),Manifest.permission.READ_MEDIA_AUDIO)== PackageManager.PERMISSION_GRANTED) {
+                musicInfos = MusicUtil.getMusicInfos();
+                checkMusicInfoIsEmptyThenAlert();
+            }else if (ContextCompat.checkSelfPermission(MyApplication.getContext(),Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
+                musicInfos = MusicUtil.getMusicInfos();
+                checkMusicInfoIsEmptyThenAlert();
+            }else {
+                Toast.makeText(MyApplication.getContext(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void checkMusicInfoIsEmptyThenAlert(){
+        if (musicInfos.isEmpty()){
+            Toast.makeText(MyApplication.getContext(), getString(R.string.didnt_find_music),Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
