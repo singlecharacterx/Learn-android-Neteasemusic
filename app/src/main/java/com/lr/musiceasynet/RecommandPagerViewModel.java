@@ -4,13 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class RecommandPagerViewModel extends ViewModel {
-    private MutableLiveData<Integer> pageIndex;
+    private MutableLiveData<Integer> pageIndex = new MutableLiveData<>(0);;
 
     public MutableLiveData<Integer> getPageIndex(){
-        if (pageIndex==null){
-             pageIndex = new MutableLiveData<>();
-             pageIndex.setValue(0);
-        }
+
         return pageIndex;
     }
 

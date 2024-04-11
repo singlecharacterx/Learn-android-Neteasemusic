@@ -16,4 +16,5 @@
     <string name="next_music">下一首</string>
     <string name="please_give_music_permisson">请先授予音乐读取权限</string>
     <string name="didnt_find_music">未找到音乐</string>
+    <string name="dont_instantiate_util">不要实例化工具类</string>
 </resources>

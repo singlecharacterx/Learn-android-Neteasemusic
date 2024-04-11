@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigationrecommandpage"
-        android:name="com.lr.musiceasynet.RecommendPageContainerFragment"
+        android:name="com.lr.musiceasynet.ui.fragment.RecommendPageContainerFragment"
         android:label="fragment_recommandation"
         tools:layout="@layout/fragment_recommand_page_container" />
 
     <fragment
         android:id="@+id/navigationmyAccount"
-        android:name="com.lr.musiceasynet.MyAccountFragment"
+        android:name="com.lr.musiceasynet.ui.fragment.MyAccountFragment"
         android:label="fragment_my_account"
         tools:layout="@layout/fragment_my_account" />
 
     <fragment
         android:id="@+id/navigationHome"
-        android:name="com.lr.musiceasynet.HomeFragment"
+        android:name="com.lr.musiceasynet.ui.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 

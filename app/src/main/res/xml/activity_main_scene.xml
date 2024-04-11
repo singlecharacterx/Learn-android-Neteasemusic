@@ -5,7 +5,7 @@
     <ConstraintSet android:id="@+id/start">
         <Constraint android:id="@+id/fragmentContainerView" />
         <Constraint
-            android:id="@+id/music_player_banner"
+            android:id="@+id/music_player_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/fragmentContainerView" />
@@ -14,79 +14,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/music_player_banner"
+            app:layout_constraintTop_toBottomOf="@id/music_player_bar"
             android:alpha="1"/>
         <Constraint
-            android:id="@+id/bottom_music_banner_img"
+            android:id="@+id/bottom_music_bar_img"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
             android:layout_marginStart="10dp"
-            app:layout_constraintTop_toTopOf="@+id/music_player_banner"
-            app:layout_constraintStart_toStartOf="@+id/music_player_banner" />
+            app:layout_constraintTop_toTopOf="@+id/music_player_bar"
+            app:layout_constraintStart_toStartOf="@+id/music_player_bar" />
         <Constraint
-            android:id="@+id/bottom_music_banner_title"
-            app:layout_constraintStart_toEndOf="@id/bottom_music_banner_img"
+            android:id="@+id/bottom_music_bar_title"
+            app:layout_constraintStart_toEndOf="@id/bottom_music_bar_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
             android:layout_marginStart="10dp"
-            app:layout_constraintTop_toTopOf="@+id/music_player_banner"
+            app:layout_constraintTop_toTopOf="@+id/music_player_bar"
             android:scaleX="1.0"
             android:scaleY="1.0"/>
         <Constraint
-            android:id="@+id/bottom_music_banner_subtitle"
+            android:id="@+id/bottom_music_bar_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
-            app:layout_constraintTop_toTopOf="@+id/music_player_banner"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
+            app:layout_constraintTop_toTopOf="@+id/music_player_bar"
             android:scaleX="1.0"
             android:scaleY="1.0"
             android:alpha="0"/>
         <Constraint
-            android:id="@+id/bottom_music_banner_controller"
-            app:layout_constraintEnd_toEndOf="@+id/music_player_banner"
+            android:id="@+id/bottom_music_bar_controller"
+            app:layout_constraintEnd_toEndOf="@+id/music_player_bar"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
             android:layout_marginEnd="10dp"
-            app:layout_constraintTop_toTopOf="@+id/music_player_banner">
+            app:layout_constraintTop_toTopOf="@+id/music_player_bar">
             <CustomAttribute
                 app:attributeName="crossfade"
                 app:customFloatValue="0" />
         </Constraint>
         <Constraint
-            android:id="@+id/bottom_music_banner_previous"
+            android:id="@+id/bottom_music_bar_previous"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/bottom_music_banner_title"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
-            app:layout_constraintStart_toStartOf="@id/music_player_banner"
-            app:layout_constraintEnd_toStartOf="@id/bottom_music_banner_controller"
+            app:layout_constraintTop_toBottomOf="@id/bottom_music_bar_title"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
+            app:layout_constraintStart_toStartOf="@id/music_player_bar"
+            app:layout_constraintEnd_toStartOf="@id/bottom_music_bar_controller"
             android:alpha="0" >
             <CustomAttribute
                 app:attributeName="clickable"
                 app:customBoolean="false" />
         </Constraint>
         <Constraint
-            android:id="@+id/bottom_music_banner_next"
+            android:id="@+id/bottom_music_bar_next"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/bottom_music_banner_controller"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
-            app:layout_constraintEnd_toEndOf="@id/music_player_banner"
-            app:layout_constraintStart_toEndOf="@+id/bottom_music_banner_controller"
+            app:layout_constraintTop_toBottomOf="@id/bottom_music_bar_controller"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
+            app:layout_constraintEnd_toEndOf="@id/music_player_bar"
+            app:layout_constraintStart_toEndOf="@+id/bottom_music_bar_controller"
             android:alpha="0">
             <CustomAttribute
                 app:attributeName="clickable"
                 app:customBoolean="false" />
         </Constraint>
         <Constraint
-            android:id="@+id/bottom_music_banner_progress"
+            android:id="@+id/bottom_music_bar_progress"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/bottom_music_banner_title"
-            app:layout_constraintBottom_toBottomOf="@+id/music_player_banner"
+            app:layout_constraintTop_toBottomOf="@id/bottom_music_bar_title"
+            app:layout_constraintBottom_toBottomOf="@+id/music_player_bar"
             app:layout_constraintEnd_toStartOf="@id/bottom_music_banner"
             app:layout_constraintStart_toStartOf="@+id/bottom_music_banner"
             android:alpha="0"/>
@@ -100,7 +100,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
         <Constraint
-            android:id="@+id/music_player_banner"
+            android:id="@+id/music_player_bar"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -118,86 +118,86 @@
             app:layout_constraintTop_toBottomOf="parent"
             android:alpha="0"/>
         <Constraint
-            android:id="@+id/bottom_music_banner_img"
+            android:id="@+id/bottom_music_bar_img"
             app:layout_constraintWidth_percent="0.8"
             app:layout_constraintHeight_percent="0.4"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            app:layout_constraintTop_toTopOf="@+id/music_player_banner"
-            app:layout_constraintStart_toStartOf="@+id/music_player_banner"
-            app:layout_constraintEnd_toEndOf="@+id/music_player_banner"
-            app:layout_constraintBottom_toTopOf="@id/bottom_music_banner_title"
+            app:layout_constraintTop_toTopOf="@+id/music_player_bar"
+            app:layout_constraintStart_toStartOf="@+id/music_player_bar"
+            app:layout_constraintEnd_toEndOf="@+id/music_player_bar"
+            app:layout_constraintBottom_toTopOf="@id/bottom_music_bar_title"
             android:layout_marginTop="30dp" />
         <Constraint
-            android:id="@+id/bottom_music_banner_title"
+            android:id="@+id/bottom_music_bar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/bottom_music_banner_img"
-            app:layout_constraintStart_toStartOf="@id/music_player_banner"
-            app:layout_constraintEnd_toEndOf="@id/music_player_banner"
-            app:layout_constraintBottom_toTopOf="@id/bottom_music_banner_subtitle"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_music_bar_img"
+            app:layout_constraintStart_toStartOf="@id/music_player_bar"
+            app:layout_constraintEnd_toEndOf="@id/music_player_bar"
+            app:layout_constraintBottom_toTopOf="@id/bottom_music_bar_subtitle"
             android:scaleX="1.5"
             android:scaleY="1.5"
             android:layout_marginTop="10dp"/>
         <Constraint
-            android:id="@+id/bottom_music_banner_subtitle"
+            android:id="@+id/bottom_music_bar_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/bottom_music_banner_title"
-            app:layout_constraintStart_toStartOf="@id/music_player_banner"
-            app:layout_constraintEnd_toEndOf="@id/music_player_banner"
+            app:layout_constraintTop_toBottomOf="@+id/bottom_music_bar_title"
+            app:layout_constraintStart_toStartOf="@id/music_player_bar"
+            app:layout_constraintEnd_toEndOf="@id/music_player_bar"
             android:layout_marginTop="5dp"
             android:scaleX="1.2"
             android:scaleY="1.2"
             android:alpha="1"/>
         <Constraint
-            android:id="@+id/bottom_music_banner_controller"
+            android:id="@+id/bottom_music_bar_controller"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@id/bottom_music_banner_subtitle"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_music_banner_progress"
-            app:layout_constraintStart_toStartOf="@id/music_player_banner"
-            app:layout_constraintEnd_toEndOf="@+id/music_player_banner">
+            app:layout_constraintTop_toBottomOf="@id/bottom_music_bar_subtitle"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_music_bar_progress"
+            app:layout_constraintStart_toStartOf="@id/music_player_bar"
+            app:layout_constraintEnd_toEndOf="@+id/music_player_bar">
            <!-- <CustomAttribute
                 app:attributeName="crossfade"
                 app:customFloatValue="1" />-->
         </Constraint>
         <Constraint
-            android:id="@+id/bottom_music_banner_previous"
+            android:id="@+id/bottom_music_bar_previous"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@id/bottom_music_banner_subtitle"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_music_banner_progress"
-            app:layout_constraintStart_toStartOf="@id/music_player_banner"
-            app:layout_constraintEnd_toStartOf="@id/bottom_music_banner_controller"
+            app:layout_constraintTop_toBottomOf="@id/bottom_music_bar_subtitle"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_music_bar_progress"
+            app:layout_constraintStart_toStartOf="@id/music_player_bar"
+            app:layout_constraintEnd_toStartOf="@id/bottom_music_bar_controller"
             android:alpha="1">
             <CustomAttribute
                 app:attributeName="clickable"
                 app:customBoolean="true" />
         </Constraint>
         <Constraint
-            android:id="@+id/bottom_music_banner_next"
+            android:id="@+id/bottom_music_bar_next"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:layout_constraintTop_toBottomOf="@id/bottom_music_banner_subtitle"
-            app:layout_constraintBottom_toTopOf="@+id/bottom_music_banner_progress"
-            app:layout_constraintEnd_toEndOf="@id/music_player_banner"
-            app:layout_constraintStart_toEndOf="@+id/bottom_music_banner_controller"
+            app:layout_constraintTop_toBottomOf="@id/bottom_music_bar_subtitle"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_music_bar_progress"
+            app:layout_constraintEnd_toEndOf="@id/music_player_bar"
+            app:layout_constraintStart_toEndOf="@+id/bottom_music_bar_controller"
             android:alpha="1">
             <CustomAttribute
                 app:attributeName="clickable"
                 app:customBoolean="true" />
         </Constraint>
         <Constraint
-            android:id="@+id/bottom_music_banner_progress"
+            android:id="@+id/bottom_music_bar_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toBottomOf="@id/music_player_banner"
-            app:layout_constraintEnd_toEndOf="@id/music_player_banner"
-            app:layout_constraintStart_toStartOf="@+id/music_player_banner"/>
+            app:layout_constraintBottom_toBottomOf="@id/music_player_bar"
+            app:layout_constraintEnd_toEndOf="@id/music_player_bar"
+            app:layout_constraintStart_toStartOf="@+id/music_player_bar"/>
     </ConstraintSet>
 
     <Transition

@@ -23,7 +23,9 @@
         android:theme="@style/Theme.乐音云易网"
         tools:targetApi="31">
 
-        <service android:name=".MusicPlayerService"/>
+        <service
+            android:foregroundServiceType="mediaPlayback"
+            android:name=".MusicPlayerService"/>
 
         <activity
             android:name=".MainActivity"

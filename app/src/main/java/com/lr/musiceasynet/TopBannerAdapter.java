@@ -19,7 +19,7 @@ public class TopBannerAdapter extends RecyclerView.Adapter<TopBannerAdapter.Bann
 
     }
 
-    TopBannerAdapter(Activity activity, List<Integer> list){
+    public TopBannerAdapter(Activity activity, List<Integer> list){
         this.activity = activity;
         this.list = list;
     }

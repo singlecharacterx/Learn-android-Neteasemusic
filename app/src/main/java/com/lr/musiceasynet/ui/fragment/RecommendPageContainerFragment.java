@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.lr.musiceasynet.FragmentPagerAdapter;
+import com.lr.musiceasynet.R;
+import com.lr.musiceasynet.RecommandPagerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
