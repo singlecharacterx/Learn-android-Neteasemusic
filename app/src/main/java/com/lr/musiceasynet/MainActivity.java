@@ -25,7 +25,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.lr.musiceasynet.music.DealMusicInfo;
 import com.lr.musiceasynet.util.CommonUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -121,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void setMusicImg(MusicInfo musicInfo){
-        if (musicInfo.getUrl()!=null&& DealMusicInfo.getMusicImg(musicInfo)!=null) {
-            bottomMusicBarImg.setImageBitmap (DealMusicInfo.getMusicImg(musicInfo));
+        if (musicInfo.getUrl()!=null&& musicInfo.getMusicImg()!=null) {
+            bottomMusicBarImg.setImageBitmap (musicInfo.getMusicImg());
         }else if (musicInfo.getUrl()!=null){
             if (CommonUtil.isDarkMode(this))
                 bottomMusicBarImg.

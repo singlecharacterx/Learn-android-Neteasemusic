@@ -1,7 +1,14 @@
 package com.lr.musiceasynet;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.provider.MediaStore;
+
+import java.io.IOException;
+import java.util.Objects;
 
 public class MusicInfo {
     public MusicInfo(){
@@ -86,6 +93,22 @@ public class MusicInfo {
         } else {
             return (time / 1000 / 60) + ":" + time / 1000 % 60;
         }
+    }
+
+    public Bitmap getMusicImg(){
+        Bitmap bitmap = null;
+        if (getUrl()!=null&& Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q) {
+            try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
+                mediaMetadataRetriever.setDataSource(getUrl());
+                if (mediaMetadataRetriever.getEmbeddedPicture()!=null)
+                    bitmap = BitmapFactory.decodeByteArray(mediaMetadataRetriever.getEmbeddedPicture(),
+                            0, Objects.requireNonNull(mediaMetadataRetriever.getEmbeddedPicture()).length);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }//版本适配待做
+
+        return bitmap;
     }
 
 }

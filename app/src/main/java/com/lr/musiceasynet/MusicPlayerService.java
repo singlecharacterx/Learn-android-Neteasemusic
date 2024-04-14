@@ -19,8 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
-import com.lr.musiceasynet.music.DealMusicInfo;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -242,7 +240,7 @@ public class MusicPlayerService extends Service
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             notification = new NotificationCompat.Builder(this,"0")
                     .setSmallIcon(R.drawable.tune_dark)
-                    .setLargeIcon(DealMusicInfo.getMusicImg(musicInfo))
+                    .setLargeIcon(musicInfo.getMusicImg())
                     .setContentTitle(musicInfo.getTitle())
                     .setContentText(musicInfo.getArtisst())
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
@@ -262,7 +260,7 @@ public class MusicPlayerService extends Service
         mediadatacompat.putText(MediaMetadataCompat.METADATA_KEY_TITLE,
                 musicInfo.getTitle());
         mediadatacompat.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
-                DealMusicInfo.getMusicImg(musicInfo));
+                musicInfo.getMusicImg());
         mediaSessionCompat.setMetadata(mediadatacompat.build());
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
                 mediaPlayer.getCurrentPosition(),1);

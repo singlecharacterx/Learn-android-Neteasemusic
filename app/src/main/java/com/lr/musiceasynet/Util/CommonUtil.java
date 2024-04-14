@@ -11,9 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class CommonUtil {
 
-    private CommonUtil(){
-        throw new Error("工具类不可实例化");
-    }
+    private CommonUtil(){}
 
     public static boolean isDarkMode(Context context){
         return context.getResources().getConfiguration().uiMode == 0x21;

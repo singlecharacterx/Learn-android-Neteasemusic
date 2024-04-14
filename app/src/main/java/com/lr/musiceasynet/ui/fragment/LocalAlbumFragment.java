@@ -23,7 +23,7 @@ import com.lr.musiceasynet.MusicListRVAdapter;
 import com.lr.musiceasynet.MusicPlayerBarViewModel;
 import com.lr.musiceasynet.MyApplication;
 import com.lr.musiceasynet.R;
-import com.lr.musiceasynet.music.DealMusicInfo;
+import com.lr.musiceasynet.music.MusicInfosProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +78,7 @@ public class LocalAlbumFragment extends Fragment {
                     Manifest.permission.POST_NOTIFICATIONS},0);
             return;
         }
-        musicInfos = DealMusicInfo.getMusicInfos();
+        musicInfos = MusicInfosProvider.getMusicInfos();
         checkMusicInfoIsEmptyThenAlert();
 
     }
@@ -93,7 +93,7 @@ public class LocalAlbumFragment extends Fragment {
                     Manifest.permission.READ_EXTERNAL_STORAGE},0);
             return;
         }
-        musicInfos = DealMusicInfo.getMusicInfos();
+        musicInfos = MusicInfosProvider.getMusicInfos();
         checkMusicInfoIsEmptyThenAlert();
     }
 
