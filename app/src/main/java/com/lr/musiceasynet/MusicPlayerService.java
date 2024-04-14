@@ -17,14 +17,21 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.MutableLiveData;
 
-import com.lr.musiceasynet.business.MusicBusiness;
+import com.lr.musiceasynet.music.DealMusicInfo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicPlayerService extends Service implements MediaPlayer.OnBufferingUpdateListener,MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener{
+public class MusicPlayerService extends Service
+        implements MediaPlayer.OnBufferingUpdateListener,
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnCompletionListener{
+    MutableLiveData<Boolean> isPlaying = new MutableLiveData<>(false);
+    MutableLiveData<MusicInfo> deliverMusicInfo =
+            new MutableLiveData<>(new MusicInfo(null,0,MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
 
     MediaPlayer mediaPlayer;
     private MusicInfo musicInfo;
@@ -36,8 +43,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     private List<MusicInfo> musicInfos = new ArrayList<>();
     int musicPosition;
 
-    MusicPlayerBarViewModel musicPlayerBarViewModel;
-
     MediaSessionCompat mediaSessionCompat;
 
     MediaMetadataCompat.Builder mediadatacompat = new MediaMetadataCompat.Builder();
@@ -48,8 +53,8 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
         public void onPrepare() {
             if (playbackStateCompat.build().getState()!=PlaybackStateCompat.STATE_PLAYING){
                 mediaPlayer.start();
-                musicPlayerBarViewModel.setIsPlaying(true);
-                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,mediaPlayer.getCurrentPosition(),1);
+                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                        mediaPlayer.getCurrentPosition(),1);
                 mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
             }
             super.onPrepare();
@@ -59,8 +64,9 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
         public void onPlay() {
             if (playbackStateCompat.build().getState()!=PlaybackStateCompat.STATE_PLAYING){
                 mediaPlayer.start();
-                musicPlayerBarViewModel.setIsPlaying(true);
-                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,mediaPlayer.getCurrentPosition(),1);
+                isPlaying.setValue(true);
+                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                        mediaPlayer.getCurrentPosition(),1);
                 mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
             }
             super.onPlay();
@@ -71,8 +77,9 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
         public void onPause() {
             if (playbackStateCompat.build().getState()!=PlaybackStateCompat.STATE_PAUSED){
                 mediaPlayer.pause();
-                musicPlayerBarViewModel.setIsPlaying(false);
-                playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,mediaPlayer.getCurrentPosition(),1);
+                isPlaying.setValue(false);
+                playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
+                        mediaPlayer.getCurrentPosition(),1);
                 mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
             }
             super.onPause();
@@ -96,7 +103,14 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
         @Override
         public void onSeekTo(long pos) {
             mediaPlayer.seekTo((int)pos);
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,mediaPlayer.getCurrentPosition(),1);
+            if (Boolean.TRUE.equals(isPlaying.getValue())){
+                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                        mediaPlayer.getCurrentPosition(),1);
+                mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+                return;
+            }
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
+                    mediaPlayer.getCurrentPosition(),1);
             mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
         }
 
@@ -158,9 +172,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
             mediaPlayer.setDataSource(musicInfo.getUrl());
             mediaPlayer.prepare();
             mediaPlayer.start();
-            musicPlayerBarViewModel.setIsPlaying(true); //提醒controller更新ui
-            musicPlayerBarViewModel.setMusicInfoLiveData(musicInfo);
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,mediaPlayer.getCurrentPosition(),1);
+            isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
+            deliverMusicInfo.setValue(musicInfos.get(musicPosition));
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                    mediaPlayer.getCurrentPosition(),1);
             mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -168,11 +183,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     }
 
     //音乐集合播放
-    public void playByMusicInfos(List<MusicInfo> musicInfos, int position, MusicPlayerBarViewModel musicPlayerBarViewModel){
+    public void playByMusicInfos(List<MusicInfo> musicInfos, int position){
         //this.musicInfo = musicInfo;
         this.musicInfos = musicInfos;
         musicPosition = position;
-        this.musicPlayerBarViewModel = musicPlayerBarViewModel;
         addToPlayerNotification(musicInfos.get(position));
         playByMusicInfo(musicInfos.get(position));
     }
@@ -180,8 +194,8 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     public void pauseMusic(){
         if (mediaPlayer.isPlaying()){
             mediaPlayer.pause();
-            musicPlayerBarViewModel.setIsPlaying(false);
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,mediaPlayer.getCurrentPosition(),1);
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
+                    mediaPlayer.getCurrentPosition(),1);
             mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
         }
     }
@@ -189,8 +203,8 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     public void resumeMusic(){
         if (!mediaPlayer.isPlaying()) {
             mediaPlayer.start();
-            musicPlayerBarViewModel.setIsPlaying(true);
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(), 1);
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                    mediaPlayer.getCurrentPosition(), 1);
             mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
         }
     }
@@ -200,11 +214,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     }
 
     void playNextMusic(){
-        if (musicInfos.size()-1>musicPosition) {
-            musicPosition++;
-        }else {
+        if (musicPosition>=musicInfos.size()-1) {
             musicPosition=0;
-        }
+        }else musicPosition++;
+
         if (!musicInfos.isEmpty() &&musicInfos.get(musicPosition).getUrl()!=null){
             addToPlayerNotification(musicInfos.get(musicPosition));
             playByMusicInfo(musicInfos.get(musicPosition));
@@ -214,7 +227,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     void playPreviousMusic(){
         if (musicPosition-1>=0) {
             musicPosition--;
-        }
+        }else musicPosition=musicInfos.size()-1;
         if (!musicInfos.isEmpty() &&musicInfos.get(musicPosition).getUrl()!=null){
             addToPlayerNotification(musicInfos.get(musicPosition));
             playByMusicInfo(musicInfos.get(musicPosition));
@@ -224,31 +237,35 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnBufferi
     private void addToPlayerNotification(MusicInfo musicInfo){
         initMediaSessionCompat(musicInfo);
         Notification notification = null;
+        NotificationManager notificationManager =
+                (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             notification = new NotificationCompat.Builder(this,"0")
                     .setSmallIcon(R.drawable.tune_dark)
-                    .setLargeIcon(MusicBusiness.getMusicImg(musicInfo))
+                    .setLargeIcon(DealMusicInfo.getMusicImg(musicInfo))
                     .setContentTitle(musicInfo.getTitle())
                     .setContentText(musicInfo.getArtisst())
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                            .setMediaSession(mediaSessionCompat.getSessionToken()).setShowActionsInCompactView(0,1,2))
+                            .setMediaSession(mediaSessionCompat.
+                                    getSessionToken()).setShowActionsInCompactView(0,1,2))
                     .build();
-        }
-        NotificationManager notificationManager = (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationManager.createNotificationChannel(new NotificationChannel("0",getString(R.string.app_name),NotificationManager.IMPORTANCE_LOW));
-        }else {
-            //版本适配待做
-        }
+            notificationManager.createNotificationChannel(
+                    new NotificationChannel("0",getString(R.string.app_name),NotificationManager.IMPORTANCE_LOW));
+        }//版本适配待做
+
         notificationManager.notify(0,notification);
     }
 
     private void initMediaSessionCompat(MusicInfo musicInfo){
-        mediadatacompat.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, musicInfo.getDuration());
-        mediadatacompat.putText(MediaMetadataCompat.METADATA_KEY_TITLE,musicInfo.getTitle());
-        mediadatacompat.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, MusicBusiness.getMusicImg(musicInfo));
+        mediadatacompat.putLong(MediaMetadataCompat.METADATA_KEY_DURATION,
+                musicInfo.getDuration());
+        mediadatacompat.putText(MediaMetadataCompat.METADATA_KEY_TITLE,
+                musicInfo.getTitle());
+        mediadatacompat.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
+                DealMusicInfo.getMusicImg(musicInfo));
         mediaSessionCompat.setMetadata(mediadatacompat.build());
-        playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING, mediaPlayer.getCurrentPosition(),1);
+        playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                mediaPlayer.getCurrentPosition(),1);
         mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
         //分开设置play和pause可贴合耳机操作 ACTION_PLAY_PAUSE则无法判断
         playbackStateCompat.setActions(PlaybackStateCompat.ACTION_PLAY

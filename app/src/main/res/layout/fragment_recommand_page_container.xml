@@ -6,7 +6,7 @@
     <data>
         <variable
             name="fragmentPagerData"
-            type="com.lr.musiceasynet.RecommandPagerViewModel" />
+            type="com.lr.musiceasynet.RecommendPagerViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

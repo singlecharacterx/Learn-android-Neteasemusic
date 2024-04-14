@@ -1,17 +1,9 @@
 package com.lr.musiceasynet;
 
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.List;
@@ -19,7 +11,8 @@ import java.util.List;
 public class FragmentPagerAdapter extends FragmentStateAdapter {
 
     List<Fragment> fragmentlist;
-    public FragmentPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,List<Fragment> fragmentlist) {
+    public FragmentPagerAdapter(@NonNull FragmentManager fragmentManager,
+                                @NonNull Lifecycle lifecycle,List<Fragment> fragmentlist) {
         super(fragmentManager, lifecycle);
         this.fragmentlist =fragmentlist;
     }

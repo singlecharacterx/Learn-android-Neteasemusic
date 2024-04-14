@@ -7,11 +7,11 @@ public class MusicInfo {
     public MusicInfo(){
 
     }
-    public MusicInfo(String url, long id, String title, String artisst, long duration,long album) {
+    public MusicInfo(String url, long id, String title, String artist, long duration,long album) {
         this.url = url;
         this.id = id;
         this.title = title;
-        this.artisst = artisst;
+        this.artisst = artist;
         this.duration = duration;
         this.album = album;
     }

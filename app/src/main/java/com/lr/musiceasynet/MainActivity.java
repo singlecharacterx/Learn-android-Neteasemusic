@@ -25,7 +25,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.lr.musiceasynet.business.MusicBusiness;
+import com.lr.musiceasynet.music.DealMusicInfo;
 import com.lr.musiceasynet.util.CommonUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,8 +60,10 @@ public class MainActivity extends AppCompatActivity {
         musicPlayerBarViewModel.getMusicInfoLiveData().observe(this, this::onObserveMusicInfoChanged);
         initHandler(bottomMusicBarProgress);
         musicPlayerBarViewModel.getIsPlaying().observe(this, this::onObserveMusicIsPlaying);
-        bottomMusicBarNext.setOnClickListener(view-> musicPlayerBarViewModel.playNextMusic(musicPlayerService));
-        bottomMusicBarPrevious.setOnClickListener(view-> musicPlayerBarViewModel.playPreviousMusic(musicPlayerService));
+        bottomMusicBarNext.setOnClickListener(view->
+                musicPlayerBarViewModel.playNextMusic(musicPlayerService));
+        bottomMusicBarPrevious.setOnClickListener(view->
+                musicPlayerBarViewModel.playPreviousMusic(musicPlayerService));
         progressChanged();
         musicPlayerBar.setOnClickListener(view->{
             if (main.getCurrentState()==R.id.start) main.transitionToEnd();
@@ -119,14 +121,15 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private void setMusicImg(MusicInfo musicInfo){
-        if (musicInfo.getUrl()!=null&& MusicBusiness.getMusicImg(musicInfo)!=null) {
-            bottomMusicBarImg.setImageBitmap (MusicBusiness.getMusicImg(musicInfo));
+        if (musicInfo.getUrl()!=null&& DealMusicInfo.getMusicImg(musicInfo)!=null) {
+            bottomMusicBarImg.setImageBitmap (DealMusicInfo.getMusicImg(musicInfo));
         }else if (musicInfo.getUrl()!=null){
             if (CommonUtil.isDarkMode(this))
                 bottomMusicBarImg.
                         setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.tune_light));
             else
-                bottomMusicBarImg.setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.tune_dark));
+                bottomMusicBarImg.setImageDrawable(
+                        AppCompatResources.getDrawable(this,R.drawable.tune_dark));
         }
     }
 
@@ -149,21 +152,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void onObserveMusicIsPlaying(boolean isPlaying){//ui层
         if (isPlaying){
-            if (CommonUtil.isDarkMode(this)) {
-                bottomMusicBarController.setImageDrawable(
-                        AppCompatResources.getDrawable(this,R.drawable.pause_light));
-            }else {
+            if (!CommonUtil.isDarkMode(this)) {
                 bottomMusicBarController.setImageDrawable(
                         AppCompatResources.getDrawable(this,R.drawable.pause_dark));
+                return;
             }
+            bottomMusicBarController.setImageDrawable(
+                    AppCompatResources.getDrawable(this,R.drawable.pause_light));
         }else {
-            if (CommonUtil.isDarkMode(this)) {
-                bottomMusicBarController.setImageDrawable(
-                        AppCompatResources.getDrawable(this,R.drawable.play_light));
-            }else {
+            if (!CommonUtil.isDarkMode(this)) {
                 bottomMusicBarController.setImageDrawable(
                         AppCompatResources.getDrawable(this,R.drawable.play_dark));
+                return;
             }
+            bottomMusicBarController.setImageDrawable(
+                    AppCompatResources.getDrawable(this,R.drawable.play_light));
         }
     }
     private void onObserveMusicInfoChanged(MusicInfo musicInfo){//ui层
@@ -171,9 +174,8 @@ public class MainActivity extends AppCompatActivity {
         bottomMusicBarSubtitle.setText(musicInfo.getArtisst());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             setMusicImg(musicInfo);
-        }else {
-            //版本适配待做
-        }
+        }//版本适配待做
+
         bottomMusicBarProgress.setProgress(0);
         bottomMusicBarProgress.setMax(Math.toIntExact(musicInfo.getDuration()));
     }
@@ -184,11 +186,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 musicPlayerService = ((MusicPlayerService.MusicPlayerBinder)service).getService();
+                musicPlayerService.isPlaying.observe(MainActivity.this,
+                        isPlaying-> musicPlayerBarViewModel.setIsPlaying(isPlaying));
+                musicPlayerService.deliverMusicInfo.observe(MainActivity.this,musicInfo ->
+                        musicPlayerBarViewModel.setMusicInfoLiveData(musicInfo));
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-
             }
         };
         startService(intent);
@@ -208,7 +213,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(musicPlayerService!=null) {
-                    bottomMusicBarProgress.setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
+                    bottomMusicBarProgress
+                            .setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
                     handler.postDelayed(this, 500);
                 }
             }

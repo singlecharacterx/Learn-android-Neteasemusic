@@ -20,7 +20,7 @@ import java.util.List;
 public class RecommendationFragment extends Fragment {
 
     RecyclerView recommandbanner;
-    List<Integer> bannerlist = new ArrayList<>();;
+    List<Integer> bannerlist = new ArrayList<>();
     private View root;
 
     @Override
@@ -32,9 +32,9 @@ public class RecommendationFragment extends Fragment {
         bannerlist.add(R.drawable.ic_launcher_background);
         bannerlist.add(R.drawable.account_dark);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recommandbanner.setAdapter(new TopBannerAdapter(getActivity(), bannerlist));
+        recommandbanner.setAdapter(new TopBannerAdapter(requireActivity(), bannerlist));
         recommandbanner.setLayoutManager(linearLayoutManager);
         new LinearSnapHelper().attachToRecyclerView(recommandbanner);
 

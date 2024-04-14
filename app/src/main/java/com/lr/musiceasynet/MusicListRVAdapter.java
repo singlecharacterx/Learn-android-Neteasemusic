@@ -17,30 +17,31 @@ public class MusicListRVAdapter extends RecyclerView.Adapter<MusicListRVAdapter.
 
 
     Activity activity;
-    List<MusicInfo> musicinfos;
-    public MusicListRVAdapter(Activity activity,List<MusicInfo> musicinfos) {
+    List<MusicInfo> musicInfos;
+    public MusicListRVAdapter(Activity activity,List<MusicInfo> musicInfos) {
         this.activity = activity;
-        this.musicinfos = musicinfos;
+        this.musicInfos = musicInfos;
     }
 
     @NonNull
     @Override
     public MusicListViewHoder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View musiclistview = LayoutInflater.from(activity).inflate(R.layout.music_list_item,parent,false);
+        View musiclistview =
+                LayoutInflater.from(activity).inflate(R.layout.music_list_item,parent,false);
         return new MusicListViewHoder(musiclistview);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MusicListViewHoder holder, int position) {
-        holder.idtext.setText(String.valueOf(musicinfos.get(position).getId()));
-        holder.titletext.setText(musicinfos.get(position).getTitle());
-        holder.artisttext.setText(musicinfos.get(position).getArtisst());
-        holder.durationtext.setText(MusicInfo.formatTime(musicinfos.get(position).getDuration()));
+        holder.idtext.setText(String.valueOf(musicInfos.get(position).getId()));
+        holder.titletext.setText(musicInfos.get(position).getTitle());
+        holder.artisttext.setText(musicInfos.get(position).getArtisst());
+        holder.durationtext.setText(MusicInfo.formatTime(musicInfos.get(position).getDuration()));
     }
 
     @Override
     public int getItemCount() {
-        return musicinfos.size();
+        return musicInfos.size();
     }
 
     public class MusicListViewHoder extends RecyclerView.ViewHolder implements View.OnClickListener{

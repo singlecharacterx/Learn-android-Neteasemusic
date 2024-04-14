@@ -23,7 +23,7 @@ import com.lr.musiceasynet.MusicListRVAdapter;
 import com.lr.musiceasynet.MusicPlayerBarViewModel;
 import com.lr.musiceasynet.MyApplication;
 import com.lr.musiceasynet.R;
-import com.lr.musiceasynet.business.MusicBusiness;
+import com.lr.musiceasynet.music.DealMusicInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,19 +41,19 @@ public class LocalAlbumFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_local_album, container, false);
-
         localmusicrv = root.findViewById(R.id.local_album_list_RV);
-        musicPlayerBarViewModel = new ViewModelProvider(getActivity()).get(MusicPlayerBarViewModel.class);
+        musicPlayerBarViewModel = new ViewModelProvider(requireActivity()).get(MusicPlayerBarViewModel.class);
         checkPermission();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        musicListRVAdapter = new MusicListRVAdapter(getActivity(),musicInfos);
+        musicListRVAdapter = new MusicListRVAdapter(requireActivity(),musicInfos);
         localmusicrv.setLayoutManager(linearLayoutManager);
         localmusicrv.setAdapter(musicListRVAdapter);
         musicListRVAdapter.setOnMusicItemClickListener(position -> {
             musicPlayerBarViewModel.setMusicInfoLiveData(musicInfos.get(position));
             musicPlayerBarViewModel.setIsMusicUriNull(false);
-            musicPlayerBarViewModel.playMusicInfos(musicInfos,position,((MainActivity)getActivity()).getBindedService());
+            musicPlayerBarViewModel.playMusicInfos(musicInfos,position,
+                    ((MainActivity)requireActivity()).getBindedService());
         });
 
         return root;
@@ -71,30 +71,30 @@ public class LocalAlbumFragment extends Fragment {
     private void checkPermissionApi33() {
         if (ContextCompat.checkSelfPermission(MyApplication.getContext(),
                 Manifest.permission.READ_MEDIA_AUDIO)
-                == PackageManager.PERMISSION_GRANTED) {
-            musicInfos = MusicBusiness.getMusicInfos();
-            checkMusicInfoIsEmptyThenAlert();
-        }else {
+                != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(MyApplication.getContext(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(getActivity(), new String[]{
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{
                     Manifest.permission.READ_MEDIA_AUDIO,
                     Manifest.permission.POST_NOTIFICATIONS},0);
+            return;
         }
+        musicInfos = DealMusicInfo.getMusicInfos();
+        checkMusicInfoIsEmptyThenAlert();
+
     }
 
 
     private void checkPermissionUnderApi33(){
         if (ContextCompat.checkSelfPermission(MyApplication.getContext(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED) {
-            musicInfos = MusicBusiness.getMusicInfos();
-            checkMusicInfoIsEmptyThenAlert();
-        }else {
+                != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(MyApplication.getContext(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(getActivity(), new String[]{
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE},0);
-            //版本适配待做 低版本通知权限
+            return;
         }
+        musicInfos = DealMusicInfo.getMusicInfos();
+        checkMusicInfoIsEmptyThenAlert();
     }
 
     private void checkMusicInfoIsEmptyThenAlert(){

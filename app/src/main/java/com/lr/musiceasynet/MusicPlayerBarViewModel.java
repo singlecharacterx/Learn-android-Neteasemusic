@@ -36,7 +36,7 @@ public class MusicPlayerBarViewModel extends ViewModel{
 
 
     public void playMusicInfos(List<MusicInfo> musicInfos,Integer position,MusicPlayerService musicPlayerService){
-        musicPlayerService.playByMusicInfos(musicInfos,position,this);
+        musicPlayerService.playByMusicInfos(musicInfos,position);
     }
 
     public void playNextMusic(MusicPlayerService musicPlayerService){
@@ -55,29 +55,28 @@ public class MusicPlayerBarViewModel extends ViewModel{
 
     public void onBottomMusicBarControllerClick(MusicPlayerService musicPlayerService){
         if (Boolean.FALSE.equals(isMusicUriNull.getValue())) {
-            if (musicPlayerService.mediaPlayer.isPlaying()) {
-                musicPlayerService.pauseMusic();
-                isPlaying.setValue(false);
-            } else {
+            if (!musicPlayerService.mediaPlayer.isPlaying()) {
                 musicPlayerService.resumeMusic();
-                isPlaying.setValue(true);
+                setIsPlaying(true);
+                return;
             }
+            musicPlayerService.pauseMusic();
+            setIsPlaying(false);
         }
     }
 
     public void progressChanged(int progress,boolean fromUser,MusicPlayerService musicPlayerService){
         if (fromUser){
             musicPlayerService.mediaPlayer.seekTo(progress);
-            if (musicPlayerService.mediaPlayer.isPlaying()) {
-                musicPlayerService.playbackStateCompat
-                        .setState(PlaybackStateCompat.STATE_PLAYING, progress, 1);
-                musicPlayerService.mediaSessionCompat
-                        .setPlaybackState(musicPlayerService.playbackStateCompat.build());
-            }else {
-                musicPlayerService.playbackStateCompat
-                        .setState(PlaybackStateCompat.STATE_PAUSED, progress, 1);
-                musicPlayerService.mediaSessionCompat
-                        .setPlaybackState(musicPlayerService.playbackStateCompat.build());
+            musicPlayerService.playbackStateCompat
+                    .setState(PlaybackStateCompat.STATE_PLAYING, progress, 1);
+            musicPlayerService.mediaSessionCompat
+                    .setPlaybackState(musicPlayerService.playbackStateCompat.build());
+            //若暂停不先设置播放状态再设置暂停则进度条不会更新
+            if (!musicPlayerService.mediaPlayer.isPlaying()) {
+                musicPlayerService.playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
+                        musicPlayerService.mediaPlayer.getCurrentPosition(),1);
+                musicPlayerService.mediaSessionCompat.setPlaybackState(musicPlayerService.playbackStateCompat.build());
             }
         }
     }

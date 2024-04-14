@@ -1,4 +1,4 @@
-package com.lr.musiceasynet.business;
+package com.lr.musiceasynet.music;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,11 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MusicBusiness {
-    private static final String TAG = "MusicBusiness";
+public class DealMusicInfo {
+    private static final String TAG = "DealMusicInfo";
 
     public static List<MusicInfo> getMusicInfos(){
-        Cursor cursor = MyApplication.getContext().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,MediaStore.Audio.Media.DEFAULT_SORT_ORDER,null);
+        Cursor cursor = MyApplication.getContext().getContentResolver()
+                .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,
+                        MediaStore.Audio.Media.DEFAULT_SORT_ORDER,null);
         List<MusicInfo> musicInfos = new ArrayList<>();
         assert cursor!=null; //cursor永远非空
         while (cursor.moveToNext()){
@@ -35,13 +37,14 @@ public class MusicBusiness {
         if (musicInfo.getUrl()!=null&& Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q) {
             try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
                 mediaMetadataRetriever.setDataSource(musicInfo.getUrl());
-                if (mediaMetadataRetriever.getEmbeddedPicture()!=null) bitmap = BitmapFactory.decodeByteArray(mediaMetadataRetriever.getEmbeddedPicture(), 0, Objects.requireNonNull(mediaMetadataRetriever.getEmbeddedPicture()).length);
+                if (mediaMetadataRetriever.getEmbeddedPicture()!=null)
+                    bitmap = BitmapFactory.decodeByteArray(mediaMetadataRetriever.getEmbeddedPicture(),
+                            0, Objects.requireNonNull(mediaMetadataRetriever.getEmbeddedPicture()).length);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }else {
-            //版本适配待做
-        }
+        }//版本适配待做
+
         return bitmap;
     }
 }
