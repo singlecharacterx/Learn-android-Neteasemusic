@@ -36,7 +36,7 @@ public class MusicListRVAdapter extends RecyclerView.Adapter<MusicListRVAdapter.
         holder.idtext.setText(String.valueOf(musicInfos.get(position).getId()));
         holder.titletext.setText(musicInfos.get(position).getTitle());
         holder.artisttext.setText(musicInfos.get(position).getArtisst());
-        holder.durationtext.setText(MusicInfo.formatTime(musicInfos.get(position).getDuration()));
+        holder.durationtext.setText(musicInfos.get(position).formatTime());
     }
 
     @Override

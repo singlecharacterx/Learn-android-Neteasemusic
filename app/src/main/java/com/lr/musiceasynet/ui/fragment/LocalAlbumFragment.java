@@ -21,7 +21,6 @@ import com.lr.musiceasynet.MainActivity;
 import com.lr.musiceasynet.MusicInfo;
 import com.lr.musiceasynet.MusicListRVAdapter;
 import com.lr.musiceasynet.MusicPlayerBarViewModel;
-import com.lr.musiceasynet.MyApplication;
 import com.lr.musiceasynet.R;
 import com.lr.musiceasynet.music.MusicInfosProvider;
 
@@ -51,7 +50,6 @@ public class LocalAlbumFragment extends Fragment {
         localmusicrv.setAdapter(musicListRVAdapter);
         musicListRVAdapter.setOnMusicItemClickListener(position -> {
             musicPlayerBarViewModel.setMusicInfoLiveData(musicInfos.get(position));
-            musicPlayerBarViewModel.setIsMusicUriNull(false);
             musicPlayerBarViewModel.playMusicInfos(musicInfos,position,
                     ((MainActivity)requireActivity()).getBindedService());
         });
@@ -69,10 +67,10 @@ public class LocalAlbumFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void checkPermissionApi33() {
-        if (ContextCompat.checkSelfPermission(MyApplication.getContext(),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.READ_MEDIA_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(MyApplication.getContext(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
                     Manifest.permission.READ_MEDIA_AUDIO,
                     Manifest.permission.POST_NOTIFICATIONS},0);
@@ -85,10 +83,10 @@ public class LocalAlbumFragment extends Fragment {
 
 
     private void checkPermissionUnderApi33(){
-        if (ContextCompat.checkSelfPermission(MyApplication.getContext(),
+        if (ContextCompat.checkSelfPermission(requireActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(MyApplication.getContext(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE},0);
             return;
@@ -99,7 +97,7 @@ public class LocalAlbumFragment extends Fragment {
 
     private void checkMusicInfoIsEmptyThenAlert(){
         if (musicInfos.isEmpty()){
-            Toast.makeText(MyApplication.getContext(), getString(R.string.didnt_find_music),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireActivity(), getString(R.string.didnt_find_music),Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class MusicInfo {
+
+    private final int IntJudgeForSingleDigits = 10;
+
     public MusicInfo(){
 
     }
@@ -87,26 +90,35 @@ public class MusicInfo {
         this.album = album;
     }
 
-    public static String formatTime(long time){
-        if (time / 1000 % 60 < 10) {
-            return (time / 1000 / 60) + ":0" + time / 1000 % 60;
+    public String formatTime(){
+        if (calculateDurationSec() < IntJudgeForSingleDigits) {
+            return calculateDurationMin() + ":0" + calculateDurationSec();
         } else {
-            return (time / 1000 / 60) + ":" + time / 1000 % 60;
+            return calculateDurationMin() + ":" + calculateDurationSec();
         }
+    }
+
+    private long calculateDurationMin(){
+        return (this.duration / 1000 / 60);
+    }
+
+    private long calculateDurationSec(){
+        return (this.duration / 1000 % 60);
     }
 
     public Bitmap getMusicImg(){
         Bitmap bitmap = null;
-        if (getUrl()!=null&& Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q) {
-            try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
-                mediaMetadataRetriever.setDataSource(getUrl());
-                if (mediaMetadataRetriever.getEmbeddedPicture()!=null)
-                    bitmap = BitmapFactory.decodeByteArray(mediaMetadataRetriever.getEmbeddedPicture(),
-                            0, Objects.requireNonNull(mediaMetadataRetriever.getEmbeddedPicture()).length);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }//版本适配待做
+        if (getUrl()==null&& Build.VERSION.SDK_INT<Build.VERSION_CODES.Q) {
+            return null;
+        }
+        try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
+            mediaMetadataRetriever.setDataSource(getUrl());
+            if (mediaMetadataRetriever.getEmbeddedPicture()!=null)
+                bitmap = BitmapFactory.decodeByteArray(mediaMetadataRetriever.getEmbeddedPicture(),
+                        0, Objects.requireNonNull(mediaMetadataRetriever.getEmbeddedPicture()).length);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         return bitmap;
     }

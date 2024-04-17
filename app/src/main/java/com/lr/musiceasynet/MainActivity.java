@@ -1,6 +1,5 @@
 package com.lr.musiceasynet;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +27,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lr.musiceasynet.util.CommonUtil;
 
 public class MainActivity extends AppCompatActivity {
+    private final int defaultDelayMills = 500;
+    private final int startProgress = 0;
 
     BottomNavigationView bottomNavigationView;
     NavController navController;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         initView();
         CommonUtil.edgeToEdge(this,main);
         musicPlayerBarViewModel = new ViewModelProvider(this).get(MusicPlayerBarViewModel.class);
-        connectToService(this);
+        connectToService();
         //navController = Navigation.findNavController(this,R.id.fragmentContainerView);
         musicPlayerBarViewModel.getMusicInfoLiveData().observe(this, this::onObserveMusicInfoChanged);
         initHandler(bottomMusicBarProgress);
@@ -108,12 +109,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onBottomNavigationItemClick(MenuItem menuItem){
-        if (menuItem.getItemId()==R.id.navtorec){
-            navController.navigate(R.id.navigationrecommandpage );
-        }else if(menuItem.getItemId()==R.id.navtomain){
+        if (menuItem.getItemId()==R.id.nav_to_discovery){
+            navController.navigate(R.id.navigationrecommandpage);
+        }else if(menuItem.getItemId()==R.id.nav_to_main){
             navController.navigate(R.id.navigationHome);
         }
-        else if(menuItem.getItemId()==R.id.navtomyaccount){
+        else if(menuItem.getItemId()==R.id.nav_to_myaccount){
             navController.navigate(R.id.navigationmyAccount);
         }
     }
@@ -150,15 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onObserveMusicIsPlaying(boolean isPlaying){//ui层
-        if (isPlaying){
-            if (!CommonUtil.isDarkMode(this)) {
-                bottomMusicBarController.setImageDrawable(
-                        AppCompatResources.getDrawable(this,R.drawable.pause_dark));
-                return;
-            }
-            bottomMusicBarController.setImageDrawable(
-                    AppCompatResources.getDrawable(this,R.drawable.pause_light));
-        }else {
+        if (!isPlaying){
             if (!CommonUtil.isDarkMode(this)) {
                 bottomMusicBarController.setImageDrawable(
                         AppCompatResources.getDrawable(this,R.drawable.play_dark));
@@ -166,7 +159,16 @@ public class MainActivity extends AppCompatActivity {
             }
             bottomMusicBarController.setImageDrawable(
                     AppCompatResources.getDrawable(this,R.drawable.play_light));
+            return;
         }
+        if (!CommonUtil.isDarkMode(this)) {
+            bottomMusicBarController.setImageDrawable(
+                    AppCompatResources.getDrawable(this,R.drawable.pause_dark));
+            return;
+        }
+        bottomMusicBarController.setImageDrawable(
+                AppCompatResources.getDrawable(this,R.drawable.pause_light));
+
     }
     private void onObserveMusicInfoChanged(MusicInfo musicInfo){//ui层
         bottomMusicBarTitle.setText(musicInfo.getTitle());
@@ -174,13 +176,12 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             setMusicImg(musicInfo);
         }//版本适配待做
-
-        bottomMusicBarProgress.setProgress(0);
+        bottomMusicBarProgress.setProgress(startProgress);
         bottomMusicBarProgress.setMax(Math.toIntExact(musicInfo.getDuration()));
     }
 
-    public void connectToService(Activity activity){
-        Intent intent = new Intent(activity,MusicPlayerService.class);
+    public void connectToService(){
+        Intent intent = new Intent(this,MusicPlayerService.class);
         ServiceConnection serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
@@ -196,14 +197,14 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         startService(intent);
-        activity.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+        this.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private void overrideOnStartTrackingTouch(){
         handler.removeCallbacks(updateseekbar);
     }
     private void overrideOnStopTrackingTouch() {
-        handler.postDelayed(updateseekbar, 500);
+        handler.postDelayed(updateseekbar, defaultDelayMills);
     }
 
     private void initHandler(SeekBar bottomMusicBarProgress) {
@@ -214,11 +215,11 @@ public class MainActivity extends AppCompatActivity {
                 if(musicPlayerService!=null) {
                     bottomMusicBarProgress
                             .setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
-                    handler.postDelayed(this, 500);
+                    handler.postDelayed(this, defaultDelayMills);
                 }
             }
         };
-        handler.postDelayed(updateseekbar,500);
+        handler.postDelayed(updateseekbar,defaultDelayMills);
     }
 
     public MusicPlayerService getBindedService(){

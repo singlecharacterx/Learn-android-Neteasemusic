@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MusicInfosProvider {
+
     private static final String TAG = "MusicInfosProvider";
 
     public static List<MusicInfo> getMusicInfos(){

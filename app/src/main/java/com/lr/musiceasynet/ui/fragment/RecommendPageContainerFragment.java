@@ -27,6 +27,7 @@ public class RecommendPageContainerFragment extends Fragment {
     TabLayout fragmentContainerTab;
     ViewPager2 fragmentPager;
     View root;
+    private int firstPage = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,7 +42,7 @@ public class RecommendPageContainerFragment extends Fragment {
 
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(fragmentContainerTab, fragmentPager,
                 (tab, i) -> {
-                   if (i==0){
+                    if (i== firstPage){
                        tab.setText(getString(R.string.discover_new_songs));
                        return;
                    }

@@ -11,10 +11,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class CommonUtil {
 
+    private final static int DARKMODE_CODE = 0x21;
+
     private CommonUtil(){}
 
     public static boolean isDarkMode(Context context){
-        return context.getResources().getConfiguration().uiMode == 0x21;
+
+        return context.getResources().getConfiguration().uiMode == DARKMODE_CODE;
     }
 
     public static void edgeToEdge(ComponentActivity componentActivity, View root){

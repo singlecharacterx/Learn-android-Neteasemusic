@@ -27,6 +27,7 @@ public class MusicPlayerService extends Service
         implements MediaPlayer.OnBufferingUpdateListener,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener{
+    final int playbackSpeed = 1;
     MutableLiveData<Boolean> isPlaying = new MutableLiveData<>(false);
     MutableLiveData<MusicInfo> deliverMusicInfo =
             new MutableLiveData<>(new MusicInfo(null,0,MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
@@ -49,37 +50,31 @@ public class MusicPlayerService extends Service
 
         @Override
         public void onPrepare() {
-            if (playbackStateCompat.build().getState()!=PlaybackStateCompat.STATE_PLAYING){
-                mediaPlayer.start();
-                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                        mediaPlayer.getCurrentPosition(),1);
-                mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
-            }
+            mediaPlayer.start();
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+            setPlaybackState();
             super.onPrepare();
         }
 
         @Override
         public void onPlay() {
-            if (playbackStateCompat.build().getState()!=PlaybackStateCompat.STATE_PLAYING){
-                mediaPlayer.start();
-                isPlaying.setValue(true);
-                playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                        mediaPlayer.getCurrentPosition(),1);
-                mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
-            }
+            mediaPlayer.start();
+            isPlaying.setValue(true);
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+            setPlaybackState();
             super.onPlay();
             Log.d("play",String.valueOf(playbackStateCompat.build().getState()));
         }
 
         @Override
         public void onPause() {
-            if (playbackStateCompat.build().getState()!=PlaybackStateCompat.STATE_PAUSED){
-                mediaPlayer.pause();
-                isPlaying.setValue(false);
-                playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                        mediaPlayer.getCurrentPosition(),1);
-                mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
-            }
+            mediaPlayer.pause();
+            isPlaying.setValue(false);
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
+                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+            setPlaybackState();
             super.onPause();
             Log.d("pause",String.valueOf(playbackStateCompat.build().getState()));
         }
@@ -103,13 +98,13 @@ public class MusicPlayerService extends Service
             mediaPlayer.seekTo((int)pos);
             if (Boolean.TRUE.equals(isPlaying.getValue())){
                 playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                        mediaPlayer.getCurrentPosition(),1);
-                mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+                        mediaPlayer.getCurrentPosition(),playbackSpeed);
+                setPlaybackState();
                 return;
             }
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mediaPlayer.getCurrentPosition(),1);
-            mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+            setPlaybackState();
         }
 
     };
@@ -135,7 +130,6 @@ public class MusicPlayerService extends Service
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnPreparedListener(this);
         mediaPlayer.setOnCompletionListener(this);
-
         //Log.d("service","Imstart");
     }
 
@@ -174,7 +168,7 @@ public class MusicPlayerService extends Service
             deliverMusicInfo.setValue(musicInfos.get(musicPosition));
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
                     mediaPlayer.getCurrentPosition(),1);
-            mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+            setPlaybackState();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -190,21 +184,20 @@ public class MusicPlayerService extends Service
     }
 
     public void pauseMusic(){
-        if (mediaPlayer.isPlaying()){
-            mediaPlayer.pause();
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mediaPlayer.getCurrentPosition(),1);
-            mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
-        }
+        mediaPlayer.pause();
+        playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
+                mediaPlayer.getCurrentPosition(),playbackSpeed);
+        setPlaybackState();
     }
 
     public void resumeMusic(){
-        if (!mediaPlayer.isPlaying()) {
-            mediaPlayer.start();
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(), 1);
-            mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+        if (mediaPlayer.isPlaying()) {
+            return;
         }
+        mediaPlayer.start();
+        playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                mediaPlayer.getCurrentPosition(), playbackSpeed);
+        setPlaybackState();
     }
 
     public void stopMusic(){
@@ -232,6 +225,13 @@ public class MusicPlayerService extends Service
         }
     }
 
+    public void setIsPlayingValue(){
+        isPlaying.setValue(mediaPlayer.isPlaying());
+    }
+    public void setPlaybackState(){
+        mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+    }
+
     private void addToPlayerNotification(MusicInfo musicInfo){
         initMediaSessionCompat(musicInfo);
         Notification notification = null;
@@ -245,7 +245,7 @@ public class MusicPlayerService extends Service
                     .setContentText(musicInfo.getArtisst())
                     .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                             .setMediaSession(mediaSessionCompat.
-                                    getSessionToken()).setShowActionsInCompactView(0,1,2))
+                                    getSessionToken()))
                     .build();
             notificationManager.createNotificationChannel(
                     new NotificationChannel("0",getString(R.string.app_name),NotificationManager.IMPORTANCE_LOW));
@@ -263,8 +263,8 @@ public class MusicPlayerService extends Service
                 musicInfo.getMusicImg());
         mediaSessionCompat.setMetadata(mediadatacompat.build());
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                mediaPlayer.getCurrentPosition(),1);
-        mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+                mediaPlayer.getCurrentPosition(),playbackSpeed);
+        setPlaybackState();
         //分开设置play和pause可贴合耳机操作 ACTION_PLAY_PAUSE则无法判断
         playbackStateCompat.setActions(PlaybackStateCompat.ACTION_PLAY
                 |PlaybackStateCompat.ACTION_PAUSE
@@ -272,7 +272,7 @@ public class MusicPlayerService extends Service
                 |PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
                 |PlaybackStateCompat.ACTION_SEEK_TO);
         mediaSessionCompat.setCallback(callback);
-        mediaSessionCompat.setPlaybackState(playbackStateCompat.build());
+        setPlaybackState();
     }
 
 }
