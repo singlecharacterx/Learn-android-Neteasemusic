@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lr.musiceasynet.MainActivity;
-import com.lr.musiceasynet.MusicInfo;
+import com.lr.musiceasynet.music.MusicInfo;
 import com.lr.musiceasynet.MusicListRVAdapter;
 import com.lr.musiceasynet.MusicPlayerBarViewModel;
 import com.lr.musiceasynet.R;

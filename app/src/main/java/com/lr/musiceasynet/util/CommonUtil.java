@@ -16,8 +16,7 @@ public class CommonUtil {
     private CommonUtil(){}
 
     public static boolean isDarkMode(Context context){
-
-        return context.getResources().getConfiguration().uiMode == DARKMODE_CODE;
+        return context.getResources().getConfiguration().uiMode != DARKMODE_CODE;
     }
 
     public static void edgeToEdge(ComponentActivity componentActivity, View root){

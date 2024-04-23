@@ -3,7 +3,6 @@ package com.lr.musiceasynet.music;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
-import com.lr.musiceasynet.MusicInfo;
 import com.lr.musiceasynet.MyApplication;
 
 import java.util.ArrayList;

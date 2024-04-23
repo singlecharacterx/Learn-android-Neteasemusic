@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,11 +23,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.lr.musiceasynet.music.MusicInfo;
 import com.lr.musiceasynet.util.CommonUtil;
 
 public class MainActivity extends AppCompatActivity {
-    private final int defaultDelayMills = 500;
-    private final int startProgress = 0;
+    private final int DEFAULT_DELAY_MILLS = 500;
+    private final int START_PROGRESS = 0;
 
     BottomNavigationView bottomNavigationView;
     NavController navController;
@@ -124,12 +124,8 @@ public class MainActivity extends AppCompatActivity {
         if (musicInfo.getUrl()!=null&& musicInfo.getMusicImg()!=null) {
             bottomMusicBarImg.setImageBitmap (musicInfo.getMusicImg());
         }else if (musicInfo.getUrl()!=null){
-            if (CommonUtil.isDarkMode(this))
                 bottomMusicBarImg.
-                        setImageDrawable(AppCompatResources.getDrawable(this,R.drawable.tune_light));
-            else
-                bottomMusicBarImg.setImageDrawable(
-                        AppCompatResources.getDrawable(this,R.drawable.tune_dark));
+                        setImageDrawable(NightModeAdapter.imgTune());
         }
     }
 
@@ -152,23 +148,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void onObserveMusicIsPlaying(boolean isPlaying){//ui层
         if (!isPlaying){
-            if (!CommonUtil.isDarkMode(this)) {
-                bottomMusicBarController.setImageDrawable(
-                        AppCompatResources.getDrawable(this,R.drawable.play_dark));
+                bottomMusicBarController.setImageDrawable(NightModeAdapter.imgPlay());
                 return;
-            }
-            bottomMusicBarController.setImageDrawable(
-                    AppCompatResources.getDrawable(this,R.drawable.play_light));
-            return;
         }
-        if (!CommonUtil.isDarkMode(this)) {
-            bottomMusicBarController.setImageDrawable(
-                    AppCompatResources.getDrawable(this,R.drawable.pause_dark));
-            return;
-        }
-        bottomMusicBarController.setImageDrawable(
-                AppCompatResources.getDrawable(this,R.drawable.pause_light));
-
+        bottomMusicBarController.setImageDrawable(NightModeAdapter.imgPause());
     }
     private void onObserveMusicInfoChanged(MusicInfo musicInfo){//ui层
         bottomMusicBarTitle.setText(musicInfo.getTitle());
@@ -176,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             setMusicImg(musicInfo);
         }//版本适配待做
-        bottomMusicBarProgress.setProgress(startProgress);
+        bottomMusicBarProgress.setProgress(START_PROGRESS);
         bottomMusicBarProgress.setMax(Math.toIntExact(musicInfo.getDuration()));
     }
 
@@ -186,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 musicPlayerService = ((MusicPlayerService.MusicPlayerBinder)service).getService();
-                musicPlayerService.isPlaying.observe(MainActivity.this,
-                        isPlaying-> musicPlayerBarViewModel.setIsPlaying(isPlaying));
                 musicPlayerService.deliverMusicInfo.observe(MainActivity.this,musicInfo ->
                         musicPlayerBarViewModel.setMusicInfoLiveData(musicInfo));
+                musicPlayerService.isPlaying.observe(MainActivity.this,
+                        isPlaying-> musicPlayerBarViewModel.setIsPlaying(isPlaying));
             }
 
             @Override
@@ -204,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacks(updateseekbar);
     }
     private void overrideOnStopTrackingTouch() {
-        handler.postDelayed(updateseekbar, defaultDelayMills);
+        handler.postDelayed(updateseekbar, DEFAULT_DELAY_MILLS);
     }
 
     private void initHandler(SeekBar bottomMusicBarProgress) {
@@ -215,11 +198,11 @@ public class MainActivity extends AppCompatActivity {
                 if(musicPlayerService!=null) {
                     bottomMusicBarProgress
                             .setProgress(musicPlayerService.mediaPlayer.getCurrentPosition());
-                    handler.postDelayed(this, defaultDelayMills);
+                    handler.postDelayed(this, DEFAULT_DELAY_MILLS);
                 }
             }
         };
-        handler.postDelayed(updateseekbar,defaultDelayMills);
+        handler.postDelayed(updateseekbar, DEFAULT_DELAY_MILLS);
     }
 
     public MusicPlayerService getBindedService(){

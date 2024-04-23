@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@+id/fragmentContainerView" />
+        <Constraint android:id="@+id/fragmentContainerView"/>
         <Constraint
             android:id="@+id/music_player_bar"
             android:layout_width="match_parent"
@@ -98,7 +98,8 @@
             android:layout_height="60dp"
             app:layout_constraintBottom_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent"
+            android:alpha="0"/>
         <Constraint
             android:id="@+id/music_player_bar"
             android:layout_width="0dp"

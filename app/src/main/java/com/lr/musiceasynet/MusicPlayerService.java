@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
+import com.lr.musiceasynet.music.MusicInfo;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class MusicPlayerService extends Service
         implements MediaPlayer.OnBufferingUpdateListener,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener{
-    final int playbackSpeed = 1;
+    final int PLAYBACK_SPEED = 1;
     MutableLiveData<Boolean> isPlaying = new MutableLiveData<>(false);
     MutableLiveData<MusicInfo> deliverMusicInfo =
             new MutableLiveData<>(new MusicInfo(null,0,MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
@@ -52,7 +54,7 @@ public class MusicPlayerService extends Service
         public void onPrepare() {
             mediaPlayer.start();
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
             setPlaybackState();
             super.onPrepare();
         }
@@ -62,7 +64,7 @@ public class MusicPlayerService extends Service
             mediaPlayer.start();
             isPlaying.setValue(true);
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
             setPlaybackState();
             super.onPlay();
             Log.d("play",String.valueOf(playbackStateCompat.build().getState()));
@@ -73,7 +75,7 @@ public class MusicPlayerService extends Service
             mediaPlayer.pause();
             isPlaying.setValue(false);
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
             setPlaybackState();
             super.onPause();
             Log.d("pause",String.valueOf(playbackStateCompat.build().getState()));
@@ -98,12 +100,12 @@ public class MusicPlayerService extends Service
             mediaPlayer.seekTo((int)pos);
             if (Boolean.TRUE.equals(isPlaying.getValue())){
                 playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                        mediaPlayer.getCurrentPosition(),playbackSpeed);
+                        mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
                 setPlaybackState();
                 return;
             }
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mediaPlayer.getCurrentPosition(),playbackSpeed);
+                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
             setPlaybackState();
         }
 
@@ -186,7 +188,7 @@ public class MusicPlayerService extends Service
     public void pauseMusic(){
         mediaPlayer.pause();
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                mediaPlayer.getCurrentPosition(),playbackSpeed);
+                mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
         setPlaybackState();
     }
 
@@ -196,7 +198,7 @@ public class MusicPlayerService extends Service
         }
         mediaPlayer.start();
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                mediaPlayer.getCurrentPosition(), playbackSpeed);
+                mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
         setPlaybackState();
     }
 
@@ -263,7 +265,7 @@ public class MusicPlayerService extends Service
                 musicInfo.getMusicImg());
         mediaSessionCompat.setMetadata(mediadatacompat.build());
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                mediaPlayer.getCurrentPosition(),playbackSpeed);
+                mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
         setPlaybackState();
         //分开设置play和pause可贴合耳机操作 ACTION_PLAY_PAUSE则无法判断
         playbackStateCompat.setActions(PlaybackStateCompat.ACTION_PLAY

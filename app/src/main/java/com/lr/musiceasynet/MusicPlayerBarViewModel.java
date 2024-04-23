@@ -5,6 +5,8 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.lr.musiceasynet.music.MusicInfo;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -69,12 +71,12 @@ public class MusicPlayerBarViewModel extends ViewModel{
         }
         musicPlayerService.mediaPlayer.seekTo(progress);
         musicPlayerService.playbackStateCompat
-                .setState(PlaybackStateCompat.STATE_PLAYING, progress, musicPlayerService.playbackSpeed);
+                .setState(PlaybackStateCompat.STATE_PLAYING, progress, musicPlayerService.PLAYBACK_SPEED);
         musicPlayerService.setPlaybackState();
         //若暂停不先设置播放状态再设置暂停则进度条不会更新
         if (!musicPlayerService.mediaPlayer.isPlaying()) {
             musicPlayerService.playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    musicPlayerService.mediaPlayer.getCurrentPosition(),musicPlayerService.playbackSpeed);
+                    musicPlayerService.mediaPlayer.getCurrentPosition(),musicPlayerService.PLAYBACK_SPEED);
             musicPlayerService.setPlaybackState();
         }
     }

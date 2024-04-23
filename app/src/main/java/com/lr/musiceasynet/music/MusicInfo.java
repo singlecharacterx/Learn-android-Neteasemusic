@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.music;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -7,12 +7,12 @@ import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.provider.MediaStore;
 
-import java.io.IOException;
-import java.util.Objects;
-
 public class MusicInfo {
 
-    private final int IntJudgeForSingleDigits = 10;
+    public final static int MILLS_IN_SECOND = 1000;
+    public final static int MILLS_IN_MINIUTE = 60;
+
+    private final int INT_SINGLE_DIGIT = 10;
 
     public MusicInfo(){
 
@@ -91,7 +91,7 @@ public class MusicInfo {
     }
 
     public String formatTime(){
-        if (calculateDurationSec() < IntJudgeForSingleDigits) {
+        if (calculateDurationSec() < INT_SINGLE_DIGIT) {
             return calculateDurationMin() + ":0" + calculateDurationSec();
         } else {
             return calculateDurationMin() + ":" + calculateDurationSec();
@@ -99,28 +99,26 @@ public class MusicInfo {
     }
 
     private long calculateDurationMin(){
-        return (this.duration / 1000 / 60);
+        return (this.duration / MILLS_IN_SECOND / MILLS_IN_MINIUTE);
     }
 
     private long calculateDurationSec(){
-        return (this.duration / 1000 % 60);
+        return (this.duration / MILLS_IN_SECOND % MILLS_IN_MINIUTE);
     }
 
     public Bitmap getMusicImg(){
-        Bitmap bitmap = null;
-        if (getUrl()==null&& Build.VERSION.SDK_INT<Build.VERSION_CODES.Q) {
+        if (getUrl()==null||Build.VERSION.SDK_INT<Build.VERSION_CODES.Q) {
             return null;
         }
         try (MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever()) {
             mediaMetadataRetriever.setDataSource(getUrl());
-            if (mediaMetadataRetriever.getEmbeddedPicture()!=null)
-                bitmap = BitmapFactory.decodeByteArray(mediaMetadataRetriever.getEmbeddedPicture(),
-                        0, Objects.requireNonNull(mediaMetadataRetriever.getEmbeddedPicture()).length);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            byte[] picture = mediaMetadataRetriever.getEmbeddedPicture();
+            if (picture==null) throw new NullPointerException("专辑图片为空");
+            return BitmapFactory.decodeByteArray(picture, 0, picture.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-
-        return bitmap;
     }
 
 }
