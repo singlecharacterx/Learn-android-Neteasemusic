@@ -1,0 +1,79 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.乐音云易网" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="windowNoTitle">true</item>
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+
+    <style name="topradius_background">
+        <item name="android:background">@drawable/topradius_monet_dark</item>
+    </style>
+
+    <style name="monet_background">
+        <item name="android:background" tools:targetApi="s">@android:color/system_accent2_600</item>
+    </style>
+
+    <style name="monet_background.2">
+        <item name="android:background" tools:targetApi="s">@android:color/system_accent2_500</item>
+    </style>
+
+    <style name="monet_background_light">
+        <item name="android:background" tools:targetApi="s">@android:color/system_accent1_10</item>
+    </style>
+
+    <style name="monet_background_dark">
+        <item name="android:background" tools:targetApi="s">@android:color/system_accent2_700</item>
+    </style>
+
+    <style name="account">
+        <item name="android:src">@drawable/account_light</item>
+    </style>
+
+    <style name="folder">
+        <item name="android:src">@drawable/folder_light</item>
+    </style>
+
+    <style name="discover">
+        <item name="android:src">@drawable/discover_light</item>
+    </style>
+
+    <style name="favorate">
+        <item name="android:src">@drawable/favorite_light</item>
+    </style>
+
+    <style name="tune">
+        <item name="android:src">@drawable/tune_light</item>
+    </style>
+
+    <style name="play">
+        <item name="android:src">@drawable/play_light</item>
+    </style>
+
+    <style name="pause">
+        <item name="android:src">@drawable/pause_light</item>
+    </style>
+
+    <style name="previous">
+        <item name="android:src">@drawable/skip_previous_light</item>
+    </style>
+
+    <style name="next">
+        <item name="android:src">@drawable/skip_next_light</item>
+    </style>
+
+    <style name="pause_circle">
+        <item name="android:src">@drawable/pause_circle_light</item>
+    </style>
+
+    <style name="play_circle">
+        <item name="android:src">@drawable/play_circle_light</item>
+    </style>
+
+    <style name="play_circle_app">
+        <item name="android:src">@drawable/play_circle_light</item>
+        <item name="altSrc">@drawable/play_circle_light</item>
+    </style>
+
+
+</resources>

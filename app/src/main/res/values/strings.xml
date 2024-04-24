@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">乐音云易网</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="recommend">推荐</string>
+    <string name="main_index">主页</string>
+    <string name="about_me">我的</string>
+    <string name="all_music">所有音乐</string>
+    <string name="no_music_is_playing">没有音乐正在播放</string>
+    <string name="hello_bro">你好，我的朋友</string>
+    <string name="recommend_album">推荐歌单</string>
+    <string name="discover_new_songs">发现新音乐</string>
+    <string name="local_songs">本地音乐</string>
+    <string name="artist_name">歌手名</string>
+    <string name="previous_music">上一首</string>
+    <string name="next_music">下一首</string>
+    <string name="please_give_music_permisson">请先授予音乐读取权限</string>
+    <string name="didnt_find_music">未找到音乐</string>
+    <string name="dont_instantiate_util">不要实例化工具类</string>
+</resources>

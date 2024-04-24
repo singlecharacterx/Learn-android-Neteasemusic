@@ -1,0 +1,89 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.乐音云易网" parent="Theme.Material3.DynamicColors.DayNight">
+        <item name="windowNoTitle">true</item>
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorSurface">#FFEAF1FF</item>
+        <item name="colorOnSurfaceVariant">@color/dark_blue_monet2</item>
+        <item name="colorSecondaryContainer">@color/light_blue_monet</item>
+        <item name="colorOnPrimary">@color/dark_blue_monet2</item>
+        <item name="colorPrimary">@color/light_blue</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@color/transparent</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">@color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+    </style>
+
+    <style name="Theme.乐音云易网" parent="Base.Theme.乐音云易网" />
+
+    <style name="topradius_background">
+        <item name="android:background">@drawable/topradius_monet_light</item>
+    </style>
+
+    <style name="monet_background">
+        <item name="android:background" tools:targetApi="s">@color/material_dynamic_primary95</item>
+    </style>
+
+    <style name="monet_background.2">
+        <item name="android:background" tools:targetApi="s">@color/material_dynamic_secondary90</item>
+    </style>
+
+    <style name="monet_background_light">
+        <item name="android:background" tools:targetApi="s">@android:color/system_accent1_10</item>
+    </style>
+
+    <style name="monet_background_dark">
+        <item name="android:background" tools:targetApi="s">@android:color/system_accent2_700</item>
+    </style>
+
+    <style name="account">
+        <item name="android:src">@drawable/account_dark</item>
+    </style>
+
+    <style name="folder">
+        <item name="android:src">@drawable/folder_dark</item>
+    </style>
+
+    <style name="discover">
+        <item name="android:src">@drawable/discover_dark</item>
+    </style>
+
+    <style name="favorate">
+        <item name="android:src">@drawable/favorite_dark</item>
+    </style>
+
+    <style name="tune">
+        <item name="android:src">@drawable/tune_dark</item>
+    </style>
+
+    <style name="play">
+        <item name="android:src">@drawable/play_dark</item>
+    </style>
+
+    <style name="pause">
+        <item name="android:src">@drawable/pause_dark</item>
+    </style>
+
+    <style name="previous">
+        <item name="android:src">@drawable/skip_previous_dark</item>
+    </style>
+
+    <style name="next">
+        <item name="android:src">@drawable/skip_next_dark</item>
+    </style>
+
+    <style name="pause_circle">
+        <item name="android:src">@drawable/pause_circle_dark</item>
+    </style>
+
+    <style name="play_circle">
+        <item name="android:src">@drawable/play_circle_dark</item>
+    </style>
+
+    <style name="play_circle_app">
+        <item name="android:src">@drawable/play_circle_dark</item>
+        <item name="altSrc">@drawable/play_circle_dark</item>
+    </style>
+
+</resources>
