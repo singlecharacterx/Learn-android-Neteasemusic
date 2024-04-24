@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.ui.activity;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -23,12 +23,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.lr.musiceasynet.viewmodel.MusicPlayerBarViewModel;
+import com.lr.musiceasynet.music.MusicPlayerService;
+import com.lr.musiceasynet.adapter.NightModeAdapter;
+import com.lr.musiceasynet.R;
 import com.lr.musiceasynet.music.MusicInfo;
 import com.lr.musiceasynet.util.CommonUtil;
 
 public class MainActivity extends AppCompatActivity {
-    private final int DEFAULT_DELAY_MILLS = 500;
-    private final int START_PROGRESS = 0;
+    public final static int DEFAULT_DELAY_MILLS = 500;
+    public final static int PROGRESS_START = 0;
 
     BottomNavigationView bottomNavigationView;
     NavController navController;
@@ -124,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         if (musicInfo.getUrl()!=null&& musicInfo.getMusicImg()!=null) {
             bottomMusicBarImg.setImageBitmap (musicInfo.getMusicImg());
         }else if (musicInfo.getUrl()!=null){
-                bottomMusicBarImg.
-                        setImageDrawable(NightModeAdapter.imgTune());
+                bottomMusicBarImg.setImageDrawable(
+                        NightModeAdapter.getImg(R.drawable.tune_dark,R.drawable.tune_light));
         }
     }
 
@@ -148,10 +152,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void onObserveMusicIsPlaying(boolean isPlaying){//ui层
         if (!isPlaying){
-                bottomMusicBarController.setImageDrawable(NightModeAdapter.imgPlay());
-                return;
+            bottomMusicBarController.setImageDrawable(
+                    NightModeAdapter.getImg(R.drawable.play_dark,R.drawable.play_light));
+            return;
         }
-        bottomMusicBarController.setImageDrawable(NightModeAdapter.imgPause());
+        bottomMusicBarController.setImageDrawable(
+                NightModeAdapter.getImg(R.drawable.pause_dark,R.drawable.pause_light));
     }
     private void onObserveMusicInfoChanged(MusicInfo musicInfo){//ui层
         bottomMusicBarTitle.setText(musicInfo.getTitle());
@@ -159,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             setMusicImg(musicInfo);
         }//版本适配待做
-        bottomMusicBarProgress.setProgress(START_PROGRESS);
+        bottomMusicBarProgress.setProgress(PROGRESS_START);
         bottomMusicBarProgress.setMax(Math.toIntExact(musicInfo.getDuration()));
     }
 
@@ -176,8 +182,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onServiceDisconnected(ComponentName name) {
-            }
+            public void onServiceDisconnected(ComponentName name) {}
         };
         startService(intent);
         this.bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);

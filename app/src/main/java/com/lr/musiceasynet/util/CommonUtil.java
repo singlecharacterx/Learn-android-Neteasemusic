@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class CommonUtil {
 
-    private final static int DARKMODE_CODE = 0x21;
+    public final static int DARKMODE_CODE = 0x21;
 
     private CommonUtil(){}
 

@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

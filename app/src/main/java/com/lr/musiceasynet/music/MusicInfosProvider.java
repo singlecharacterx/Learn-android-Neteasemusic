@@ -10,8 +10,6 @@ import java.util.List;
 
 public class MusicInfosProvider {
 
-    private static final String TAG = "MusicInfosProvider";
-
     public static List<MusicInfo> getMusicInfos(){
         Cursor cursor = MyApplication.getContext().getContentResolver()
                 .query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,

@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

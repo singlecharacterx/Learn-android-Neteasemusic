@@ -1,11 +1,14 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.viewmodel;
 
 import android.support.v4.media.session.PlaybackStateCompat;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.lr.musiceasynet.MyApplication;
+import com.lr.musiceasynet.R;
 import com.lr.musiceasynet.music.MusicInfo;
+import com.lr.musiceasynet.music.MusicPlayerService;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,7 +16,7 @@ import java.util.Objects;
 public class MusicPlayerBarViewModel extends ViewModel{
     
     public MutableLiveData<MusicInfo> musicInfoLiveData
-            = new MutableLiveData<>(new MusicInfo(null,0,MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
+            = new MutableLiveData<>(new MusicInfo(null,0, MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
 
     public MutableLiveData<MusicInfo> getMusicInfoLiveData(){
         return musicInfoLiveData;
@@ -32,7 +35,7 @@ public class MusicPlayerBarViewModel extends ViewModel{
     }
 
 
-    public void playMusicInfos(List<MusicInfo> musicInfos,Integer position,MusicPlayerService musicPlayerService){
+    public void playMusicInfos(List<MusicInfo> musicInfos, Integer position, MusicPlayerService musicPlayerService){
         musicPlayerService.playByMusicInfos(musicInfos,position);
     }
 
@@ -71,12 +74,12 @@ public class MusicPlayerBarViewModel extends ViewModel{
         }
         musicPlayerService.mediaPlayer.seekTo(progress);
         musicPlayerService.playbackStateCompat
-                .setState(PlaybackStateCompat.STATE_PLAYING, progress, musicPlayerService.PLAYBACK_SPEED);
+                .setState(PlaybackStateCompat.STATE_PLAYING, progress, MusicPlayerService.playbackSpeed);
         musicPlayerService.setPlaybackState();
         //若暂停不先设置播放状态再设置暂停则进度条不会更新
         if (!musicPlayerService.mediaPlayer.isPlaying()) {
             musicPlayerService.playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    musicPlayerService.mediaPlayer.getCurrentPosition(),musicPlayerService.PLAYBACK_SPEED);
+                    musicPlayerService.mediaPlayer.getCurrentPosition(),MusicPlayerService.playbackSpeed);
             musicPlayerService.setPlaybackState();
         }
     }

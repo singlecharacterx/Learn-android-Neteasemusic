@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lr.musiceasynet.R;
-import com.lr.musiceasynet.TopBannerAdapter;
+import com.lr.musiceasynet.adapter.TopBannerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RecommendationFragment extends Fragment {
 
-    RecyclerView recommandbanner;
+    RecyclerView recommendBanner;
     List<Integer> bannerlist = new ArrayList<>();
     private View root;
 
@@ -27,16 +27,16 @@ public class RecommendationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_recommandation, container, false);
-        recommandbanner = root.findViewById(R.id.recommend_banner);
+        recommendBanner = root.findViewById(R.id.recommend_banner);
 
         bannerlist.add(R.drawable.ic_launcher_background);
         bannerlist.add(R.drawable.account_dark);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recommandbanner.setAdapter(new TopBannerAdapter(requireActivity(), bannerlist));
-        recommandbanner.setLayoutManager(linearLayoutManager);
-        new LinearSnapHelper().attachToRecyclerView(recommandbanner);
+        recommendBanner.setAdapter(new TopBannerAdapter(requireActivity(), bannerlist));
+        recommendBanner.setLayoutManager(linearLayoutManager);
+        new LinearSnapHelper().attachToRecyclerView(recommendBanner);
 
         return root;
     }

@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.lr.musiceasynet.R;
 
 import java.util.List;
 

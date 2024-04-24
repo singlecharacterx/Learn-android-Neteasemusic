@@ -10,9 +10,9 @@ import android.provider.MediaStore;
 public class MusicInfo {
 
     public final static int MILLS_IN_SECOND = 1000;
-    public final static int MILLS_IN_MINIUTE = 60;
+    public final static int MILLS_IN_MINUTE = 60;
 
-    private final int INT_SINGLE_DIGIT = 10;
+    private final static int INT_SINGLE_DIGIT = 10;
 
     public MusicInfo(){
 
@@ -99,11 +99,11 @@ public class MusicInfo {
     }
 
     private long calculateDurationMin(){
-        return (this.duration / MILLS_IN_SECOND / MILLS_IN_MINIUTE);
+        return (this.duration / MILLS_IN_SECOND / MILLS_IN_MINUTE);
     }
 
     private long calculateDurationSec(){
-        return (this.duration / MILLS_IN_SECOND % MILLS_IN_MINIUTE);
+        return (this.duration / MILLS_IN_SECOND % MILLS_IN_MINUTE);
     }
 
     public Bitmap getMusicImg(){

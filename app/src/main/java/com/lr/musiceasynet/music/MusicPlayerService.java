@@ -1,4 +1,4 @@
-package com.lr.musiceasynet;
+package com.lr.musiceasynet.music;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -19,7 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.MutableLiveData;
 
-import com.lr.musiceasynet.music.MusicInfo;
+import com.lr.musiceasynet.MyApplication;
+import com.lr.musiceasynet.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,12 +30,14 @@ public class MusicPlayerService extends Service
         implements MediaPlayer.OnBufferingUpdateListener,
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener{
-    final int PLAYBACK_SPEED = 1;
-    MutableLiveData<Boolean> isPlaying = new MutableLiveData<>(false);
-    MutableLiveData<MusicInfo> deliverMusicInfo =
-            new MutableLiveData<>(new MusicInfo(null,0,MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
+    public static int playbackSpeed = 1;
+    public final static int NOTIFICATION_CHANNEL_ID = 1;
+    public final static String NOTIFICATION_CHANNEL_STRING_ID = "MusicEasyNetId";
+    public MutableLiveData<Boolean> isPlaying = new MutableLiveData<>(false);
+    public MutableLiveData<MusicInfo> deliverMusicInfo =
+            new MutableLiveData<>(new MusicInfo(null,0, MyApplication.getContext().getString(R.string.no_music_is_playing),MyApplication.getContext().getString(R.string.artist_name),0,0));
 
-    MediaPlayer mediaPlayer;
+    public MediaPlayer mediaPlayer;
     private MusicInfo musicInfo;
 
     public List<MusicInfo> getMusicInfos() {
@@ -47,14 +50,14 @@ public class MusicPlayerService extends Service
     MediaSessionCompat mediaSessionCompat;
 
     MediaMetadataCompat.Builder mediadatacompat = new MediaMetadataCompat.Builder();
-    PlaybackStateCompat.Builder playbackStateCompat = new PlaybackStateCompat.Builder();
+    public PlaybackStateCompat.Builder playbackStateCompat = new PlaybackStateCompat.Builder();
     MediaSessionCompat.Callback callback = new MediaSessionCompat.Callback() {
 
         @Override
         public void onPrepare() {
             mediaPlayer.start();
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                    mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
             super.onPrepare();
         }
@@ -64,7 +67,7 @@ public class MusicPlayerService extends Service
             mediaPlayer.start();
             isPlaying.setValue(true);
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                    mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
             super.onPlay();
             Log.d("play",String.valueOf(playbackStateCompat.build().getState()));
@@ -75,7 +78,7 @@ public class MusicPlayerService extends Service
             mediaPlayer.pause();
             isPlaying.setValue(false);
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                    mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
             super.onPause();
             Log.d("pause",String.valueOf(playbackStateCompat.build().getState()));
@@ -100,12 +103,12 @@ public class MusicPlayerService extends Service
             mediaPlayer.seekTo((int)pos);
             if (Boolean.TRUE.equals(isPlaying.getValue())){
                 playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                        mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                        mediaPlayer.getCurrentPosition(), playbackSpeed);
                 setPlaybackState();
                 return;
             }
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                    mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
         }
 
@@ -169,7 +172,7 @@ public class MusicPlayerService extends Service
             isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
             deliverMusicInfo.setValue(musicInfos.get(musicPosition));
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(),1);
+                    mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -188,7 +191,7 @@ public class MusicPlayerService extends Service
     public void pauseMusic(){
         mediaPlayer.pause();
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                mediaPlayer.getCurrentPosition(), playbackSpeed);
         setPlaybackState();
     }
 
@@ -198,7 +201,7 @@ public class MusicPlayerService extends Service
         }
         mediaPlayer.start();
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                mediaPlayer.getCurrentPosition(), playbackSpeed);
         setPlaybackState();
     }
 
@@ -206,7 +209,7 @@ public class MusicPlayerService extends Service
         mediaPlayer.stop();
     }
 
-    void playNextMusic(){
+    public void playNextMusic(){
         if (musicPosition>=musicInfos.size()-1) {
             musicPosition=0;
         }else musicPosition++;
@@ -217,7 +220,7 @@ public class MusicPlayerService extends Service
         }
     }
 
-    void playPreviousMusic(){
+    public void playPreviousMusic(){
         if (musicPosition-1>=0) {
             musicPosition--;
         }else musicPosition=musicInfos.size()-1;
@@ -240,7 +243,7 @@ public class MusicPlayerService extends Service
         NotificationManager notificationManager =
                 (NotificationManager) MyApplication.getContext().getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            notification = new NotificationCompat.Builder(this,"0")
+            notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_STRING_ID)
                     .setSmallIcon(R.drawable.tune_dark)
                     .setLargeIcon(musicInfo.getMusicImg())
                     .setContentTitle(musicInfo.getTitle())
@@ -250,10 +253,11 @@ public class MusicPlayerService extends Service
                                     getSessionToken()))
                     .build();
             notificationManager.createNotificationChannel(
-                    new NotificationChannel("0",getString(R.string.app_name),NotificationManager.IMPORTANCE_LOW));
+                    new NotificationChannel(NOTIFICATION_CHANNEL_STRING_ID
+                            ,getString(R.string.app_name),NotificationManager.IMPORTANCE_HIGH));
         }//版本适配待做
-
-        notificationManager.notify(0,notification);
+        startForeground(NOTIFICATION_CHANNEL_ID,notification);
+        //notificationManager.notify(NOTIFICATION_CHANNEL_ID,notification);
     }
 
     private void initMediaSessionCompat(MusicInfo musicInfo){
@@ -265,7 +269,7 @@ public class MusicPlayerService extends Service
                 musicInfo.getMusicImg());
         mediaSessionCompat.setMetadata(mediadatacompat.build());
         playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                mediaPlayer.getCurrentPosition(), PLAYBACK_SPEED);
+                mediaPlayer.getCurrentPosition(), playbackSpeed);
         setPlaybackState();
         //分开设置play和pause可贴合耳机操作 ACTION_PLAY_PAUSE则无法判断
         playbackStateCompat.setActions(PlaybackStateCompat.ACTION_PLAY

@@ -12,9 +12,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.lr.musiceasynet.FragmentPagerAdapter;
+import com.lr.musiceasynet.adapter.FragmentPagerAdapter;
 import com.lr.musiceasynet.R;
-import com.lr.musiceasynet.RecommendPagerViewModel;
+import com.lr.musiceasynet.viewmodel.RecommendPagerViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ public class RecommendPageContainerFragment extends Fragment {
     TabLayout fragmentContainerTab;
     ViewPager2 fragmentPager;
     View root;
-    private int firstPage = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -42,7 +41,7 @@ public class RecommendPageContainerFragment extends Fragment {
 
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(fragmentContainerTab, fragmentPager,
                 (tab, i) -> {
-                    if (i== firstPage){
+                    if (i== 0){
                        tab.setText(getString(R.string.discover_new_songs));
                        return;
                    }

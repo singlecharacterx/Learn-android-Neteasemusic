@@ -17,10 +17,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lr.musiceasynet.MainActivity;
+import com.lr.musiceasynet.ui.activity.MainActivity;
 import com.lr.musiceasynet.music.MusicInfo;
-import com.lr.musiceasynet.MusicListRVAdapter;
-import com.lr.musiceasynet.MusicPlayerBarViewModel;
+import com.lr.musiceasynet.music.MusicListRVAdapter;
+import com.lr.musiceasynet.viewmodel.MusicPlayerBarViewModel;
 import com.lr.musiceasynet.R;
 import com.lr.musiceasynet.music.MusicInfosProvider;
 
@@ -32,6 +32,8 @@ public class LocalAlbumFragment extends Fragment {
 
     MusicPlayerBarViewModel musicPlayerBarViewModel;
     RecyclerView localmusicrv;
+    public final static int SDK33 = 33;
+    public final static int PERMISSION_REQUEST_CODE=0;
     List<MusicInfo> musicInfos = new ArrayList<>();
     MusicListRVAdapter musicListRVAdapter;
     private View root;
@@ -58,7 +60,7 @@ public class LocalAlbumFragment extends Fragment {
     }
 
     private void checkPermission(){
-        if (Build.VERSION.SDK_INT>=33){
+        if (Build.VERSION.SDK_INT>=SDK33){
             checkPermissionApi33();
         }else {
             checkPermissionUnderApi33();
@@ -73,7 +75,7 @@ public class LocalAlbumFragment extends Fragment {
             Toast.makeText(requireActivity(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
                     Manifest.permission.READ_MEDIA_AUDIO,
-                    Manifest.permission.POST_NOTIFICATIONS},0);
+                    Manifest.permission.POST_NOTIFICATIONS},PERMISSION_REQUEST_CODE);
             return;
         }
         musicInfos = MusicInfosProvider.getMusicInfos();
@@ -88,7 +90,7 @@ public class LocalAlbumFragment extends Fragment {
                 != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(requireActivity(), getString(R.string.please_give_music_permisson),Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(requireActivity(), new String[]{
-                    Manifest.permission.READ_EXTERNAL_STORAGE},0);
+                    Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSION_REQUEST_CODE);
             return;
         }
         musicInfos = MusicInfosProvider.getMusicInfos();
