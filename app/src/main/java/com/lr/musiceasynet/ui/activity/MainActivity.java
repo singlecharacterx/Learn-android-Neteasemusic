@@ -23,12 +23,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.lr.musiceasynet.viewmodel.MusicPlayerBarViewModel;
-import com.lr.musiceasynet.music.MusicPlayerService;
-import com.lr.musiceasynet.adapter.NightModeAdapter;
 import com.lr.musiceasynet.R;
+import com.lr.musiceasynet.adapter.NightModeAdapter;
 import com.lr.musiceasynet.music.MusicInfo;
+import com.lr.musiceasynet.music.MusicPlayerService;
 import com.lr.musiceasynet.util.CommonUtil;
+import com.lr.musiceasynet.viewmodel.MusicPlayerBarViewModel;
 
 public class MainActivity extends AppCompatActivity {
     public final static int DEFAULT_DELAY_MILLS = 500;
@@ -95,8 +95,19 @@ public class MainActivity extends AppCompatActivity {
                 main.getCurrentState()==R.id.end){
             main.transitionToStart();
             return true;
+        }else if (keyCode==KeyEvent.KEYCODE_BACK&&
+                event.getRepeatCount() == 0&&
+                navController.getCurrentDestination().getId()==R.id.navigationPlaylist){
+            navController.navigateUp();
+            return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp();
+        //return super.onSupportNavigateUp();
     }
 
     private void initView(){

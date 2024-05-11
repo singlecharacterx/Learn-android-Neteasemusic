@@ -39,6 +39,13 @@ public class MusicPlayerBarViewModel extends ViewModel{
         musicPlayerService.playByMusicInfos(musicInfos,position);
     }
 
+    public void playMusicInfoOnline(MusicInfo musicInfo, MusicPlayerService musicPlayerService){
+        musicPlayerService.playByOnlineMusicInfo(musicInfo);
+    }
+    public void playMusicInfosOnline(List<MusicInfo> musicInfos, Integer position, MusicPlayerService musicPlayerService){
+        musicPlayerService.playByOnlineMusicInfos(musicInfos,position);
+    }
+
     public void playNextMusic(MusicPlayerService musicPlayerService){
         if (Objects.requireNonNull(musicInfoLiveData.getValue()).getUrl()==null) {
             return;

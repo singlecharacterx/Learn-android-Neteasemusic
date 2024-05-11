@@ -59,13 +59,14 @@ public class RecommendPageContainerFragment extends Fragment {
     }
 
     private void initViewPager(){
+        fragments.clear();
         fragments.add(new RecommendationFragment());
         fragments.add(new LocalAlbumFragment());
         fragmentContainerTab.addTab(fragmentContainerTab.newTab());
         fragmentContainerTab.addTab(fragmentContainerTab.newTab());
 
         fragmentPager.setCurrentItem(viewModel.getPageIndex());
-        fragmentPagerAdapter = new FragmentPagerAdapter(getParentFragmentManager(),getLifecycle(),fragments);
+        fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager(),getLifecycle(),fragments);
         fragmentPager.setAdapter(fragmentPagerAdapter);
 
         fragmentPager.setCurrentItem(viewModel.getPageIndex());

@@ -14,9 +14,6 @@ public class MusicInfo {
 
     private final static int INT_SINGLE_DIGIT = 10;
 
-    public MusicInfo(){
-
-    }
     public MusicInfo(String url, long id, String title, String artist, long duration,long album) {
         this.url = url;
         this.id = id;

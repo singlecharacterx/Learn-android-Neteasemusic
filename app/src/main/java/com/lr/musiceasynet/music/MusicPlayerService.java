@@ -175,7 +175,8 @@ public class MusicPlayerService extends Service
                     mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.e("playByMusicInfoError","发生IO异常");
+            //throw new RuntimeException(e);
         }
     }
 
@@ -186,6 +187,32 @@ public class MusicPlayerService extends Service
         musicPosition = position;
         addToPlayerNotification(musicInfos.get(position));
         playByMusicInfo(musicInfos.get(position));
+    }
+
+    public void playByOnlineMusicInfo(MusicInfo musicInfo){
+        this.musicInfo = musicInfo;
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(musicInfo.getUrl());
+            Log.d("MP3URL",musicInfo.getUrl());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+            isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
+            deliverMusicInfo.setValue(musicInfo);
+            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                    mediaPlayer.getCurrentPosition(), playbackSpeed);
+            setPlaybackState();
+        } catch (IOException e) {
+            Log.e("playByMusicInfoError","发生IO异常");
+            //throw new RuntimeException(e);
+        }
+    }
+    public void playByOnlineMusicInfos(List<MusicInfo> musicInfos, int position){
+        //this.musicInfo = musicInfo;
+        this.musicInfos = musicInfos;
+        musicPosition = position;
+        addToPlayerNotification(musicInfos.get(position));
+        playByOnlineMusicInfo(musicInfos.get(position));
     }
 
     public void pauseMusic(){
@@ -254,7 +281,7 @@ public class MusicPlayerService extends Service
                     .build();
             notificationManager.createNotificationChannel(
                     new NotificationChannel(NOTIFICATION_CHANNEL_STRING_ID
-                            ,getString(R.string.app_name),NotificationManager.IMPORTANCE_HIGH));
+                            ,getString(R.string.app_name),NotificationManager.IMPORTANCE_LOW));
         }//版本适配待做
         startForeground(NOTIFICATION_CHANNEL_ID,notification);
         //notificationManager.notify(NOTIFICATION_CHANNEL_ID,notification);
