@@ -55,7 +55,6 @@ public class MusicTrack {
     long id;
     List<Artist> ar;
     Album al;
-    boolean isSelected =false;
 
 
 

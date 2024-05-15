@@ -62,7 +62,6 @@ public class TopBannerAdapter extends RecyclerView.Adapter<TopBannerAdapter.Bann
             materialCardView = itemView.findViewById(R.id.top_banner_card);
             bannerImg = itemView.findViewById(R.id.banner_img);
             bannerText = itemView.findViewById(R.id.banner_text);
-
             materialCardView.setOnClickListener(this);
         }
 

@@ -39,6 +39,7 @@ public class MusicPlayerService extends Service
 
     public MediaPlayer mediaPlayer;
     private MusicInfo musicInfo;
+    private Thread musicThread;
 
     public List<MusicInfo> getMusicInfos() {
         return musicInfos;
@@ -164,20 +165,24 @@ public class MusicPlayerService extends Service
     //单曲播放
     public void playByMusicInfo(MusicInfo musicInfo){
         this.musicInfo = musicInfo;
-        try {
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(musicInfo.getUrl());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
-            deliverMusicInfo.setValue(musicInfos.get(musicPosition));
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(), playbackSpeed);
-            setPlaybackState();
-        } catch (IOException e) {
-            Log.e("playByMusicInfoError","发生IO异常");
-            //throw new RuntimeException(e);
-        }
+        new Thread(()-> {
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(musicInfo.getUrl());
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnPreparedListener(mp->{
+                    mp.start();
+                    isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
+                    deliverMusicInfo.setValue(musicInfos.get(musicPosition));
+                    playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                            mediaPlayer.getCurrentPosition(), playbackSpeed);
+                    setPlaybackState();
+                });
+            } catch (IOException e) {
+                Log.e("playByMusicInfoError", "发生IO异常");
+                //throw new RuntimeException(e);
+            }
+        }).start();
     }
 
     //音乐集合播放
@@ -191,21 +196,25 @@ public class MusicPlayerService extends Service
 
     public void playByOnlineMusicInfo(MusicInfo musicInfo){
         this.musicInfo = musicInfo;
-        try {
-            mediaPlayer.reset();
-            mediaPlayer.setDataSource(musicInfo.getUrl());
-            Log.d("MP3URL",musicInfo.getUrl());
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-            isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
-            deliverMusicInfo.setValue(musicInfo);
-            playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mediaPlayer.getCurrentPosition(), playbackSpeed);
-            setPlaybackState();
-        } catch (IOException e) {
-            Log.e("playByMusicInfoError","发生IO异常");
-            //throw new RuntimeException(e);
-        }
+        new Thread(()->{
+            try {
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(musicInfo.getUrl());
+                Log.d("MP3URL", musicInfo.getUrl());
+                mediaPlayer.prepareAsync();
+                mediaPlayer.setOnPreparedListener(mp -> {
+                    mp.start();
+                    isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
+                    deliverMusicInfo.setValue(musicInfo);
+                    playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
+                            mediaPlayer.getCurrentPosition(), playbackSpeed);
+                    setPlaybackState();
+                });
+            } catch (IOException e) {
+                Log.e("playByMusicInfoError", "发生IO异常");
+                //throw new RuntimeException(e);
+            }
+        }).start();
     }
     public void playByOnlineMusicInfos(List<MusicInfo> musicInfos, int position){
         //this.musicInfo = musicInfo;
