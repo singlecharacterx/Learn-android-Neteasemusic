@@ -1,11 +1,15 @@
 package com.lr.musiceasynet.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -22,10 +26,11 @@ import com.lr.musiceasynet.viewmodel.PlayListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class RecommendationFragment extends Fragment {
-
+    private final int UPDATE_TOP_BANNER = 0;
     public RecyclerView recommendBanner;
     public List<PlayList> bannerlist = new ArrayList<>();
     private View root;
@@ -33,6 +38,8 @@ public class RecommendationFragment extends Fragment {
     PlayListViewModel playListViewModel;
     private ApiJsonObject apiJsonObject;
     private String json;
+    private Handler handler;
+    private Message message;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,8 +47,25 @@ public class RecommendationFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_recommandation, container, false);
         init();
         initRecommendBanner();
-
+        setHandler();
         return root;
+    }
+
+    void setHandler(){
+        handler = new Handler(Objects.requireNonNull(Looper.myLooper())){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what){
+                    case UPDATE_TOP_BANNER:
+                        bannerlist = (List<PlayList>)msg.obj;
+                        topBannerAdapter = new TopBannerAdapter(requireActivity(),bannerlist);
+                        recommendBanner.setAdapter(topBannerAdapter);
+                        topBannerAdapter.setOnBannerItemClickListener(position -> onBannerItemClick(position));
+                        break;
+                }
+            }
+        };
     }
 
     void initRecommendBanner() {
@@ -51,11 +75,10 @@ public class RecommendationFragment extends Fragment {
             if (!json.equals(NetEaseApi.NO_CONTENT)){
                 apiJsonObject = NetEaseApi.getApiJsonObeject(json);
                 bannerlist = apiJsonObject.playlists;
-                requireActivity().runOnUiThread(()->{
-                    topBannerAdapter = new TopBannerAdapter(requireActivity(),bannerlist);
-                    recommendBanner.setAdapter(topBannerAdapter);
-                    topBannerAdapter.setOnBannerItemClickListener(this::onBannerItemClick);
-                });
+                message = new Message();
+                message.what = UPDATE_TOP_BANNER;
+                message.obj = bannerlist;
+                handler.sendMessage(message);
             }
         }).start();
     }

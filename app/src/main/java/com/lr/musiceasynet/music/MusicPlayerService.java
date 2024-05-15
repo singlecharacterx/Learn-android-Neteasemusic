@@ -39,6 +39,7 @@ public class MusicPlayerService extends Service
 
     public MediaPlayer mediaPlayer;
     private MusicInfo musicInfo;
+    private Thread musicThread;
 
     public List<MusicInfo> getMusicInfos() {
         return musicInfos;
@@ -169,13 +170,13 @@ public class MusicPlayerService extends Service
             mediaPlayer.setDataSource(musicInfo.getUrl());
             mediaPlayer.prepare();
             mediaPlayer.start();
-            isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
-            deliverMusicInfo.setValue(musicInfos.get(musicPosition));
+            isPlaying.postValue(true);//如果活动与服务连接则提醒controller更新ui
+            deliverMusicInfo.postValue(musicInfos.get(musicPosition));
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
                     mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
         } catch (IOException e) {
-            Log.e("playByMusicInfoError","发生IO异常");
+            Log.e("playByMusicInfoError", "发生IO异常");
             //throw new RuntimeException(e);
         }
     }
@@ -185,7 +186,7 @@ public class MusicPlayerService extends Service
         //this.musicInfo = musicInfo;
         this.musicInfos = musicInfos;
         musicPosition = position;
-        addToPlayerNotification(musicInfos.get(position));
+        //addToPlayerNotification(musicInfos.get(position));
         playByMusicInfo(musicInfos.get(position));
     }
 
@@ -194,16 +195,16 @@ public class MusicPlayerService extends Service
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(musicInfo.getUrl());
-            Log.d("MP3URL",musicInfo.getUrl());
+            Log.d("MP3URL", musicInfo.getUrl());
             mediaPlayer.prepare();
             mediaPlayer.start();
-            isPlaying.setValue(true);//如果活动与服务连接则提醒controller更新ui
-            deliverMusicInfo.setValue(musicInfo);
+            isPlaying.postValue(true);//如果活动与服务连接则提醒controller更新ui
+            deliverMusicInfo.postValue(musicInfo);
             playbackStateCompat.setState(PlaybackStateCompat.STATE_PLAYING,
                     mediaPlayer.getCurrentPosition(), playbackSpeed);
             setPlaybackState();
         } catch (IOException e) {
-            Log.e("playByMusicInfoError","发生IO异常");
+            Log.e("playByMusicInfoError", "发生IO异常");
             //throw new RuntimeException(e);
         }
     }
@@ -211,7 +212,7 @@ public class MusicPlayerService extends Service
         //this.musicInfo = musicInfo;
         this.musicInfos = musicInfos;
         musicPosition = position;
-        addToPlayerNotification(musicInfos.get(position));
+        //addToPlayerNotification(musicInfos.get(position));
         playByOnlineMusicInfo(musicInfos.get(position));
     }
 
@@ -242,7 +243,7 @@ public class MusicPlayerService extends Service
         }else musicPosition++;
 
         if (!musicInfos.isEmpty() &&musicInfos.get(musicPosition).getUrl()!=null){
-            addToPlayerNotification(musicInfos.get(musicPosition));
+            //addToPlayerNotification(musicInfos.get(musicPosition));
             playByMusicInfo(musicInfos.get(musicPosition));
         }
     }
@@ -252,7 +253,7 @@ public class MusicPlayerService extends Service
             musicPosition--;
         }else musicPosition=musicInfos.size()-1;
         if (!musicInfos.isEmpty() &&musicInfos.get(musicPosition).getUrl()!=null){
-            addToPlayerNotification(musicInfos.get(musicPosition));
+            //addToPlayerNotification(musicInfos.get(musicPosition));
             playByMusicInfo(musicInfos.get(musicPosition));
         }
     }

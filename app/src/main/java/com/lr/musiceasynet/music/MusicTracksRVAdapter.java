@@ -17,6 +17,7 @@ import java.util.List;
 public class MusicTracksRVAdapter extends RecyclerView.Adapter<MusicTracksRVAdapter.MusicTracksViewHolder> {
     Activity activity;
     List<MusicTrack> musicTracks;
+    int isSelectedPosition = -1;
 
     public MusicTracksRVAdapter(Activity activity, List<MusicTrack> musicTracks) {
         this.activity = activity;
@@ -36,6 +37,11 @@ public class MusicTracksRVAdapter extends RecyclerView.Adapter<MusicTracksRVAdap
         holder.titletext.setText(musicTracks.get(position).getName());
         holder.artisttext.setText(musicTracks.get(position).getAllArtist());
         holder.durationtext.setText(musicTracks.get(position).getAl().name);
+        /*if (position == isSelectedPosition){
+            holder.materialCardView.setCardBackgroundColor(activity.getResources().getColor(R.color.grey_transparent));
+        }else {
+            holder.materialCardView.setCardBackgroundColor(activity.getResources().getColor(R.color.transparent));
+        }*/
     }
 
     @Override
@@ -62,6 +68,9 @@ public class MusicTracksRVAdapter extends RecyclerView.Adapter<MusicTracksRVAdap
         @Override
         public void onClick(View v) {
             onItemClickListener.onClick(getAdapterPosition());
+            isSelectedPosition = getAdapterPosition();
+            //notifyDataSetChanged();
+
         }
     }
 

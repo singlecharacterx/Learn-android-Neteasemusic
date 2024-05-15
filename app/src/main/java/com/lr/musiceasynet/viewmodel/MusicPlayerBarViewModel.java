@@ -26,6 +26,10 @@ public class MusicPlayerBarViewModel extends ViewModel{
         musicInfoLiveData.setValue(musicInfo);
     }
 
+    public void postMusicInfoLiveData(MusicInfo musicInfo){
+        musicInfoLiveData.postValue(musicInfo);
+    }
+
     public MutableLiveData<Boolean> getIsPlaying(){
         return isPlaying;
     }
