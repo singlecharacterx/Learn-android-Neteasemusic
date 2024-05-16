@@ -39,7 +39,6 @@ public class MusicPlayerService extends Service
 
     public MediaPlayer mediaPlayer;
     private MusicInfo musicInfo;
-    private Thread musicThread;
 
     public List<MusicInfo> getMusicInfos() {
         return musicInfos;
