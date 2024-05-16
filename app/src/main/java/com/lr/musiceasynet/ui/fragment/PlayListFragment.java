@@ -83,12 +83,10 @@ public class PlayListFragment extends Fragment {
                         musicInfos = (List<MusicInfo>) msg.obj;
                         musicListRVAdapter = new MusicTracksRVAdapter(requireActivity(), musicTracks);
                         recyclerView.setAdapter(musicListRVAdapter);
-                        musicListRVAdapter.setOnItemClickListener(position -> {
-                            musicPlayerBarViewModel.playMusicInfosOnline(
-                                    musicInfos,
-                                    position,
-                                    ((MainActivity) requireActivity()).getBindedService());
-                        });
+                        musicListRVAdapter.setOnItemClickListener(position -> musicPlayerBarViewModel.playMusicInfosOnline(
+                                musicInfos,
+                                position,
+                                ((MainActivity) requireActivity()).getBindedService()));
                         break;
                 }
             }

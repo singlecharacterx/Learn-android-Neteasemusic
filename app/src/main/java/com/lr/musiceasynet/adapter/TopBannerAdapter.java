@@ -19,10 +19,6 @@ import java.util.List;
 
 public class TopBannerAdapter extends RecyclerView.Adapter<TopBannerAdapter.BannerViewHolder> {
 
-    TopBannerAdapter() {
-
-    }
-
     public TopBannerAdapter(Activity activity, List<PlayList> list) {
         this.activity = activity;
         this.list = list;

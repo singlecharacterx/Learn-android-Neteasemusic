@@ -50,13 +50,11 @@ public class LocalAlbumFragment extends Fragment {
         musicListRVAdapter = new MusicListRVAdapter(requireActivity(),musicInfos);
         localmusicrv.setLayoutManager(linearLayoutManager);
         localmusicrv.setAdapter(musicListRVAdapter);
-        musicListRVAdapter.setOnMusicItemClickListener(position -> {
-            new Thread(()-> {
-                musicPlayerBarViewModel.postMusicInfoLiveData(musicInfos.get(position));
-                musicPlayerBarViewModel.playMusicInfos(musicInfos, position,
-                        ((MainActivity) requireActivity()).getBindedService());
-            }).start();
-        });
+        musicListRVAdapter.setOnMusicItemClickListener(position -> new Thread(()-> {
+            musicPlayerBarViewModel.postMusicInfoLiveData(musicInfos.get(position));
+            musicPlayerBarViewModel.playMusicInfos(musicInfos, position,
+                    ((MainActivity) requireActivity()).getBindedService());
+        }).start());
 
         return root;
     }
