@@ -35,7 +35,7 @@ public class PlayListFragment extends Fragment {
     List<MusicTrack> musicTracks = new ArrayList<>();
     PlayListViewModel playListViewModel;
     MusicPlayerBarViewModel musicPlayerBarViewModel;
-    MusicTracksRVAdapter musicListRVAdapter;
+    MusicTracksRVAdapter musicListRvAdapter;
     long playlistId;
     String playlistName, playlistPicUrl, playlistDescription;
     ImageView playlistCover;
@@ -43,20 +43,25 @@ public class PlayListFragment extends Fragment {
     private ApiJsonObject jsonObject;
     private String json;
     private List<MusicInfo> musicInfos;
-    boolean isLoading = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_play_list, container, false);
         init();
-        initRV();
+        initRv();
         initTopContent();
-
+        musicListRvAdapter.setOnItemClickListener(this::onRvItemClick);
         return root;
     }
 
-
+    void onRvItemClick(int position){
+        new Thread(()->
+                musicPlayerBarViewModel.playMusicInfos(
+                musicInfos,
+                position,
+                ((MainActivity) requireActivity()).getBindedService())).start();
+    }
 
     void init() {
         recyclerView = root.findViewById(R.id.musicTracksRV);
@@ -64,7 +69,7 @@ public class PlayListFragment extends Fragment {
         playlistTitleText = root.findViewById(R.id.playlistTitle);
         playlistDescriptionText = root.findViewById(R.id.playlistDescription);
         playListViewModel = new ViewModelProvider(this).get(PlayListViewModel.class);
-        musicListRVAdapter = new MusicTracksRVAdapter(requireActivity(), musicTracks);
+        musicListRvAdapter = new MusicTracksRVAdapter(requireActivity(), musicTracks);
         musicPlayerBarViewModel = new ViewModelProvider(requireActivity()).get(MusicPlayerBarViewModel.class);
 
         playlistId = getArguments().getLong("id");
@@ -72,9 +77,11 @@ public class PlayListFragment extends Fragment {
         playlistPicUrl = getArguments().getString("picUrl");
     }
 
-    void initRV(){
+    void initRv(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        musicListRvAdapter = new MusicTracksRVAdapter(requireActivity(), musicTracks);
+        recyclerView.setAdapter(musicListRvAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
         new Thread(() -> {
             Log.d("id", String.valueOf(playlistId));
@@ -82,21 +89,11 @@ public class PlayListFragment extends Fragment {
             Log.d("json", json);
             if (!json.equals(NetEaseApi.NO_CONTENT)) {
                 jsonObject = NetEaseApi.getApiJsonObeject(json);
-                musicTracks = jsonObject.songs;
+                musicTracks.addAll(jsonObject.songs);
                 musicInfos = MusicTrack.alterTracksToInfos(musicTracks);
-                requireActivity().runOnUiThread(()->{
-                    musicListRVAdapter = new MusicTracksRVAdapter(requireActivity(), musicTracks);
-                    recyclerView.setAdapter(musicListRVAdapter);
-                    musicListRVAdapter.setOnItemClickListener(position -> {
-                        new Thread(()-> {
-                            musicPlayerBarViewModel.playMusicInfos(
-                                    musicInfos,
-                                    position,
-                                    ((MainActivity) requireActivity()).getBindedService());
-                        }).start();
-                    });
-                });
             }
+            requireActivity().runOnUiThread(()-> musicListRvAdapter.notifyDataSetChanged());
+
         }).start();
     }
 
@@ -118,6 +115,6 @@ public class PlayListFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        if (!isLoading) super.onDestroyView();
+        super.onDestroyView();
     }
 }

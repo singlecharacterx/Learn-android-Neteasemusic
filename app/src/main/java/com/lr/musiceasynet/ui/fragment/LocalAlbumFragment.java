@@ -35,7 +35,7 @@ public class LocalAlbumFragment extends Fragment {
     public final static int SDK33 = 33;
     public final static int PERMISSION_REQUEST_CODE=0;
     List<MusicInfo> musicInfos = new ArrayList<>();
-    MusicListRVAdapter musicListRVAdapter;
+    MusicListRVAdapter musicListRvAdapter;
     private View root;
 
     @Override
@@ -47,10 +47,10 @@ public class LocalAlbumFragment extends Fragment {
         checkPermission();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        musicListRVAdapter = new MusicListRVAdapter(requireActivity(),musicInfos);
+        musicListRvAdapter = new MusicListRVAdapter(requireActivity(),musicInfos);
         localmusicrv.setLayoutManager(linearLayoutManager);
-        localmusicrv.setAdapter(musicListRVAdapter);
-        musicListRVAdapter.setOnMusicItemClickListener(position -> new Thread(()-> {
+        localmusicrv.setAdapter(musicListRvAdapter);
+        musicListRvAdapter.setOnMusicItemClickListener(position -> new Thread(()-> {
             musicPlayerBarViewModel.postMusicInfoLiveData(musicInfos.get(position));
             musicPlayerBarViewModel.playMusicInfos(musicInfos, position,
                     ((MainActivity) requireActivity()).getBindedService());

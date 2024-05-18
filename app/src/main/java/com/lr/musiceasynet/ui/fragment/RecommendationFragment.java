@@ -39,6 +39,7 @@ public class RecommendationFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_recommandation, container, false);
         init();
         initRecommendBanner();
+        topBannerAdapter.setOnBannerItemClickListener(this::onBannerItemClick);
         return root;
     }
 
@@ -49,12 +50,8 @@ public class RecommendationFragment extends Fragment {
             Log.d("TEST", json);
             if (!json.equals(NetEaseApi.NO_CONTENT)){
                 apiJsonObject = NetEaseApi.getApiJsonObeject(json);
-                bannerlist = apiJsonObject.playlists;
-                requireActivity().runOnUiThread(()->{
-                    topBannerAdapter = new TopBannerAdapter(requireActivity(),bannerlist);
-                    recommendBanner.setAdapter(topBannerAdapter);
-                    topBannerAdapter.setOnBannerItemClickListener(position -> onBannerItemClick(position));
-                });
+                bannerlist.addAll(apiJsonObject.playlists);
+                requireActivity().runOnUiThread(()-> topBannerAdapter.notifyDataSetChanged());
             }
         }).start();
     }

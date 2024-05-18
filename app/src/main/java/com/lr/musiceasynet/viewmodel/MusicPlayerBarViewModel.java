@@ -1,7 +1,5 @@
 package com.lr.musiceasynet.viewmodel;
 
-import android.support.v4.media.session.PlaybackStateCompat;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -34,8 +32,8 @@ public class MusicPlayerBarViewModel extends ViewModel{
         return isPlaying;
     }
 
-    public void setIsPlaying(Boolean _isPlaying){
-        isPlaying.setValue(_isPlaying);
+    public void setIsPlaying(Boolean bool){
+        isPlaying.setValue(bool);
     }
 
 
@@ -78,15 +76,6 @@ public class MusicPlayerBarViewModel extends ViewModel{
             return;
         }
         musicPlayerService.mediaPlayer.seekTo(progress);
-        musicPlayerService.playbackStateCompat
-                .setState(PlaybackStateCompat.STATE_PLAYING, progress, MusicPlayerService.playbackSpeed);
-        musicPlayerService.setPlaybackState();
-        //若暂停不先设置播放状态再设置暂停则进度条不会更新
-        if (!musicPlayerService.mediaPlayer.isPlaying()) {
-            musicPlayerService.playbackStateCompat.setState(PlaybackStateCompat.STATE_PAUSED,
-                    musicPlayerService.mediaPlayer.getCurrentPosition(),MusicPlayerService.playbackSpeed);
-            musicPlayerService.setPlaybackState();
-        }
     }
 
 }

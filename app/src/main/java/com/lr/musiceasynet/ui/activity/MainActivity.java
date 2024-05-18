@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -29,6 +30,8 @@ import com.lr.musiceasynet.music.MusicInfo;
 import com.lr.musiceasynet.music.MusicPlayerService;
 import com.lr.musiceasynet.util.CommonUtil;
 import com.lr.musiceasynet.viewmodel.MusicPlayerBarViewModel;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public final static int DEFAULT_DELAY_MILLS = 500;
@@ -65,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
         initHandler(bottomMusicBarProgress);
         musicPlayerBarViewModel.getIsPlaying().observe(this, this::onObserveMusicIsPlaying);
         bottomMusicBarNext.setOnClickListener(view->
-                musicPlayerBarViewModel.playNextMusic(musicPlayerService));
+                musicPlayerService.playNextMusic());
         bottomMusicBarPrevious.setOnClickListener(view->
-                musicPlayerBarViewModel.playPreviousMusic(musicPlayerService));
+                musicPlayerService.playPreviousMusic());
         progressChanged();
         musicPlayerBar.setOnClickListener(view->{
-            if (main.getCurrentState()==R.id.start) main.transitionToEnd();
+            if (main.getCurrentState()==R.id.start) {
+                main.transitionToEnd();
+            }
         });
         bottomMusicBarController.setOnClickListener(view->
                 musicPlayerBarViewModel.onBottomMusicBarControllerClick(musicPlayerService));
@@ -207,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initHandler(SeekBar bottomMusicBarProgress) {
-        handler = new Handler();
+        handler = new Handler(Objects.requireNonNull(Looper.myLooper()));
         updateseekbar = new Runnable() {
             @Override
             public void run() {
