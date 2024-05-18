@@ -165,10 +165,10 @@ public class MainActivity extends AppCompatActivity {
         if (!isPlaying){
             bottomMusicBarController.setImageDrawable(
                     NightModeAdapter.getImg(R.drawable.play_dark,R.drawable.play_light));
-            return;
+        }else {
+            bottomMusicBarController.setImageDrawable(
+                    NightModeAdapter.getImg(R.drawable.pause_dark, R.drawable.pause_light));
         }
-        bottomMusicBarController.setImageDrawable(
-                NightModeAdapter.getImg(R.drawable.pause_dark,R.drawable.pause_light));
     }
     private void onObserveMusicInfoChanged(MusicInfo musicInfo){//ui层
         bottomMusicBarTitle.setText(musicInfo.getTitle());

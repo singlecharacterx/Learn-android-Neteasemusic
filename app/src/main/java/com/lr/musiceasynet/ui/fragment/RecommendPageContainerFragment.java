@@ -43,9 +43,9 @@ public class RecommendPageContainerFragment extends Fragment {
                 (tab, i) -> {
                     if (i== 0){
                        tab.setText(getString(R.string.discover_new_songs));
-                       return;
-                   }
-                   tab.setText(getString(R.string.local_songs));
+                   }else {
+                        tab.setText(getString(R.string.local_songs));
+                    }
 
         });
         tabLayoutMediator.attach();

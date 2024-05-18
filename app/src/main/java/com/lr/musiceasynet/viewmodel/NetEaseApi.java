@@ -23,6 +23,7 @@ public class NetEaseApi {
     public static final String GET_TRACKS_URL = "song/url?id=";
     public static final String GET_HIGH_QUALITY_PLAYLIST = "top/playlist/highquality";
     public static final String NO_CONTENT="内容为空";
+    public static Thread musicThread;
 
     public static <T>String getJson(String keyWords,T id){
         String content = NO_CONTENT;
