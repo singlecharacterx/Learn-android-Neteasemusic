@@ -17,4 +17,8 @@
     <string name="please_give_music_permisson">请先授予音乐读取权限</string>
     <string name="didnt_find_music">未找到音乐</string>
     <string name="dont_instantiate_util">不要实例化工具类</string>
+    <string name="playlist_name">歌单名</string>
+    <string name="playlistDescription">歌单描述</string>
+    <string name="playlist_cover">歌单封面</string>
+    <string name="high_quality_playlist">精品歌单</string>
 </resources>

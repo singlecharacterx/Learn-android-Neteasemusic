@@ -1,66 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragment.MyAccountFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/myaccountheadericoncard"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginTop="15dp"
         app:cardCornerRadius="25dp"
         app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/transparent">
+
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_margin="10dp"
-            android:scaleType="fitXY"
+            style="@style/account"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            style="@style/account"/>
+            android:layout_margin="10dp"
+            android:scaleType="fitXY" />
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="35dp"
         app:cardElevation="1dp"
+        app:layout_constraintTop_toTopOf="parent"
         app:strokeColor="@color/transparent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-           <TextView
-               android:id="@+id/myaccountusernametext"
-               android:layout_marginTop="30dp"
-               app:layout_constraintTop_toTopOf="parent"
-               app:layout_constraintStart_toStartOf="parent"
-               app:layout_constraintEnd_toEndOf="parent"
-               android:textAlignment="center"
-               android:textStyle="bold"
-               android:textSize="25sp"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:text="TestUsername"/>
+            <TextView
+                android:id="@+id/myaccountusernametext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="TestUsername"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/myaccountusertext"
-                app:layout_constraintTop_toBottomOf="@+id/myaccountusernametext"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:textAlignment="center"
-                android:textSize="18sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TestUserText"/>
+                android:text="TestUserText"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/myaccountusernametext" />
 
             <TextView
                 android:id="@+id/myaccountuserstarstext"

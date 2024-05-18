@@ -26,6 +26,10 @@ public class MusicPlayerBarViewModel extends ViewModel{
         musicInfoLiveData.setValue(musicInfo);
     }
 
+    public void postMusicInfoLiveData(MusicInfo musicInfo){
+        musicInfoLiveData.postValue(musicInfo);
+    }
+
     public MutableLiveData<Boolean> getIsPlaying(){
         return isPlaying;
     }
@@ -38,6 +42,7 @@ public class MusicPlayerBarViewModel extends ViewModel{
     public void playMusicInfos(List<MusicInfo> musicInfos, Integer position, MusicPlayerService musicPlayerService){
         musicPlayerService.playByMusicInfos(musicInfos,position);
     }
+
 
     public void playNextMusic(MusicPlayerService musicPlayerService){
         if (Objects.requireNonNull(musicInfoLiveData.getValue()).getUrl()==null) {
@@ -62,10 +67,10 @@ public class MusicPlayerBarViewModel extends ViewModel{
         if (!musicPlayerService.mediaPlayer.isPlaying()) {
             musicPlayerService.resumeMusic();
             setIsPlaying(true);
-            return;
+        }else {
+            musicPlayerService.pauseMusic();
+            setIsPlaying(false);
         }
-        musicPlayerService.pauseMusic();
-        setIsPlaying(false);
     }
 
     public void progressChanged(int progress,boolean fromUser,MusicPlayerService musicPlayerService){

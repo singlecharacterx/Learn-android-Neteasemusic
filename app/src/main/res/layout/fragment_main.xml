@@ -12,7 +12,5 @@
         tools:context=".ui.fragment.MainFragment">
 
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
